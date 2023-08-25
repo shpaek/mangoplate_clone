@@ -1,9 +1,22 @@
 package com.my.mangoplatemini.dao;
-
-public interface MemberInterface {
+import com.my.mangoplatemini.dto.MemberDTO;
+	
+	public interface MemberInterface {
+		
+		void createMember(MemberDTO member);
+	    // 회원 가입
+		    
+		void updateMember(MemberDTO member);
+		    // 회원 정보 수정
+		    
+		void deleteMember(String memberId);
+		    // 회원 삭제
+	
 //삽입 : create
 //수정 : update
 //삭제 : delete
+	
+	
 //보여줌 : show
 //
 }
