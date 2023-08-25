@@ -1,9 +1,6 @@
 package com.my.mangoplatemini.dao;
 
-
 import com.my.mangoplatemini.dto.MenuDTO;
-import java.sql.ResultSet;
-import java.util.List;
 import com.my.mangoplatemini.dto.StoreDTO;
 
 public interface StoreInterface {
