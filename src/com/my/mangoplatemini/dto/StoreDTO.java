@@ -1,5 +1,8 @@
 package com.my.mangoplatemini.dto;
 
+import lombok.Data;
+
+@Data
 public class StoreDTO {
 
 	private String business_no;
@@ -16,6 +19,15 @@ public class StoreDTO {
 	private Integer approve;
 	private Integer rating;
 	private Integer review_cnt;
+	
+	public StoreDTO(){}
+	public StoreDTO(String business_no, String user_id, String name, String address, String price
+			,String category, String tel, String parking, String open_time, String close_time
+			,String info, Integer approve){}
+	
+	public StoreDTO(String business_no, String user_id, String name, String address, String price
+			,String category, String tel, String parking, String open_time, String close_time
+			,String info){}
 
 
 }
