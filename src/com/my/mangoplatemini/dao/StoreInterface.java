@@ -21,4 +21,6 @@ public interface StoreInterface {
 	 */
 	public void deleteStore(String name);
 
+	public StoreDTO showStoreOne(String business_no);
+
 }

@@ -52,10 +52,7 @@ public class StoreDAO implements StoreInterface{
 			preparedStatement.setString(6, storeDTO.getBusiness_no());
 			
 			int rowCnt = preparedStatement.executeUpdate();
-			
-			System.out.println("succccccc"+rowCnt+storeDTO.getBusiness_no());
-			
-			
+			System.out.println(rowCnt);
 			connection.close();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -63,16 +60,16 @@ public class StoreDAO implements StoreInterface{
 	}
 
 	@Override
-	public void deleteStore(String name) {
+	public void deleteStore(String business_no) {
 		
 		connectServer();
 	    
 		try {
 			connection = DriverManager.getConnection(url,user,password);
-			String updateSQL = "UPDATE STORE SET approve = -1 WHERE name = ?";
+			String updateSQL = "UPDATE STORE SET approve = -1 WHERE trim(business_no) = ?";
 			PreparedStatement preparedStatement = connection.prepareStatement(updateSQL);
 			
-			preparedStatement.setString(1, name);
+			preparedStatement.setString(1, business_no);
 			preparedStatement.executeUpdate();
 			
 		}catch (Exception e) {
@@ -146,6 +143,41 @@ public class StoreDAO implements StoreInterface{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+
+
+
+	@Override
+	public StoreDTO showStoreOne(String business_no) {
+		StoreDTO storeDTO = new StoreDTO();
+		connectServer();
+		ResultSet resultSet = null;
+		
+		try {
+			connection = DriverManager.getConnection(url,user,password);
+			
+			String selectSQL = "select price, category, parking,"
+					+ " open_time, close_time, info from store where trim(business_no) = ?";
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+			
+			preparedStatement.setString(1, business_no);
+			resultSet = preparedStatement.executeQuery();
+
+			while(resultSet.next()) {
+				storeDTO.setBusiness_no(business_no);
+				storeDTO.setOpen_time(resultSet.getString("open_time"));
+				storeDTO.setClose_time(resultSet.getString("close_time"));
+				storeDTO.setPrice(resultSet.getString("price"));
+				storeDTO.setParking(resultSet.getString("parking"));
+				storeDTO.setInfo(resultSet.getString("info"));
+			}
+			
+			}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return storeDTO;
 	}
 
 }
