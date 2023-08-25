@@ -1,3 +1,4 @@
+import com.my.mangoplatemini.controller.ReviewController;
 import com.my.mangoplatemini.dao.ReviewDAO;
 import com.my.mangoplatemini.dto.ReviewDTO;
 
@@ -5,15 +6,29 @@ public class main {
 	
 	public static void main(String[] args) {
 		
-		ReviewDTO dto = new ReviewDTO();
-		ReviewDAO dao = new ReviewDAO();
+		ReviewController rc = new ReviewController();
 		
-		dto.setBusiness_no("1234567890");
-		dto.setUser_id("찬돌");
-		dto.setContent("맛조타~");
-		dto.setRating(4);
+		String userId = "찬돌";
+		String businessNo = "1234567890";
 		
-		dao.createReview(dto);
+		rc.createReview(userId, businessNo);
+		
+		
+		// ========================================
+		
+//		MemberDTO mdto = new MemberDTO();
+//		MemberDAO mdao = new MemberDAO();
+//		
+//		mdto.setId("찬도리");
+//		mdto.setPassword("찬도리1");
+//		mdto.setEmail("cc@nn.naver");
+//		mdto.setName("찬도리");
+//		mdto.setTel("00011112222");
+//		mdto.setUser_type(0);
+//		mdto.setUser_status(0);
+//		
+//		mdao.createMember(mdto);
+//		
 		
 	} // main
 	

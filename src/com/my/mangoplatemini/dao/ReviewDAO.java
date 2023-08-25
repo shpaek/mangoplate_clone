@@ -59,6 +59,8 @@ public class ReviewDAO implements ReviewInterface {
 			
 			pstmt.executeLargeUpdate();
 			
+			System.out.println("리뷰가 등록되었습니다.");
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
