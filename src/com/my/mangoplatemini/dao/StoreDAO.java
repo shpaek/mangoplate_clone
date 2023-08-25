@@ -63,8 +63,22 @@ public class StoreDAO implements StoreInterface{
 	}
 
 	@Override
-	public void deleteStore() {
-		// TODO Auto-generated method stub
+	public void deleteStore(String name) {
+		
+		connectServer();
+	    
+		try {
+			connection = DriverManager.getConnection(url,user,password);
+			String updateSQL = "UPDATE STORE SET approve = -1 WHERE name = ?";
+			PreparedStatement preparedStatement = connection.prepareStatement(updateSQL);
+			
+			preparedStatement.setString(1, name);
+			preparedStatement.executeUpdate();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
 

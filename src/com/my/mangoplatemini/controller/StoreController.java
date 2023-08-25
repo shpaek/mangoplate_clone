@@ -57,6 +57,9 @@ public class StoreController {
 	}
 	
 	public void deleteStore() {
+		System.out.println("삭제할 상점의 이름을 입력하세요.");
+		String name = scanner.nextLine();
+		storeDAO.deleteStore(name);
 		
 	}
 }
