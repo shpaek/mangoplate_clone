@@ -1,5 +1,6 @@
 package com.my.mangoplatemini.controller;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.my.mangoplatemini.dao.StoreDAO;
@@ -10,6 +11,12 @@ public class StoreController {
 	
 	private StoreInterface storeDAO = new StoreDAO();
 	Scanner scanner = new Scanner(System.in);
+	
+	public void showStoreDetail(String business_no) {
+		storeDAO.showStoreDetail(business_no);
+	
+	
+	}
 
 	public void updateStore(StoreDTO previewDTO) {
 		
