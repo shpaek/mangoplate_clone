@@ -6,34 +6,28 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import java.sql.Statement;
-import java.util.List;
-
+import com.my.mangoplatemini.dto.MenuDTO;
 import com.my.mangoplatemini.dto.StoreDTO;
 
 public class StoreDAO implements StoreInterface{
-	//서버정
+	//공통
+	// 서버정보
 	Connection connection = null;
-	   String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
-	   String user = "msa1";
-	   String password = "msa1";
-	
-	  
-	//서버 연결
-	public void connectServer() {
-		
-		try {
-		       Class.forName("oracle.jdbc.OracleDriver");
-		      
-		   }catch (ClassNotFoundException e1) {
-		       e1.printStackTrace();
-		   }
-		
-	}
-	
+	String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
+	String user = "msa1";
+	String password = "msa1";
 
-	   
-	   
+	// 서버 연결
+	public void connectServer() {
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
+	}
+		 
+	//홍식
+	// 상점 수정
 	@Override
 	public void updateStore(StoreDTO storeDTO) {
 		connectServer();
@@ -58,6 +52,7 @@ public class StoreDAO implements StoreInterface{
 		}
 	}
 
+	//상점 삭제
 	@Override
 	public void deleteStore(String business_no) {
 		
@@ -78,6 +73,7 @@ public class StoreDAO implements StoreInterface{
 		
 	}
 
+	//상점 상세정보
 	@Override
 	public void showStoreDetail(String business_no) {
 		
@@ -115,6 +111,7 @@ public class StoreDAO implements StoreInterface{
 		
 	}
 
+	//상점 리뷰
 	public void showStoreReview(String business_no) {
 		connectServer();
 		ResultSet resultSet = null;
@@ -141,6 +138,7 @@ public class StoreDAO implements StoreInterface{
 		}
 	}
 
+	//선택한 상점의 상세 정보
 	@Override
 	public StoreDTO showStoreOne(String business_no) {
 		StoreDTO storeDTO = new StoreDTO();
@@ -171,35 +169,37 @@ public class StoreDAO implements StoreInterface{
 			e.printStackTrace();
 		}
 		return storeDTO;
+		
 	}
 
 
-	
-
+	//학윤
 	// 메뉴 등록
 	@Override
 	public void createMenu(MenuDTO menuDTO) {
 		connectServer();
 
 		try {
-			conn = DriverManager.getConnection(url, user, password);
+			connection = DriverManager.getConnection(url, user, password);
 
 			String insertQuery = "INSERT \r\n"
 							   + "  INTO MENU (no, business_no, name, price) \r\n"
 							   + "VALUES (menu_seq.nextval, ?, ?, ?)";
 			
-			PreparedStatement preparedStatement = conn.prepareStatement(insertQuery);
+			PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
 			preparedStatement.setString(1, menuDTO.getBusiness_no());
 			preparedStatement.setString(2, menuDTO.getName());
 			preparedStatement.setInt(3, menuDTO.getPrice());
+			System.out.println(menuDTO.getBusiness_no());
+			System.out.println(menuDTO.getName());
 			preparedStatement.executeUpdate();
 			System.out.println("메뉴 등록 완료");
 			preparedStatement.close();
 		} catch (SQLException e) {
 		} finally {
 			try {
-				if (conn != null) {
-					conn.close();
+				if (connection != null) {
+					connection.close();
 				}
 			} catch (SQLException e) {
 			}
@@ -212,7 +212,7 @@ public class StoreDAO implements StoreInterface{
 		connectServer();
 
 		try {
-		    conn = DriverManager.getConnection(url, user, password);
+			connection = DriverManager.getConnection(url, user, password);
 		} catch (SQLException e) {
 		}
 		
@@ -223,7 +223,7 @@ public class StoreDAO implements StoreInterface{
 						   + "FROM MENU\r\n"
 						  + "WHERE trim(business_no) = ?";
 		try {
-			preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement = connection.prepareStatement(selectSQL);
 			preparedStatement.setString(1, business_no);
 			resultSet = preparedStatement.executeQuery();
 
@@ -248,9 +248,9 @@ public class StoreDAO implements StoreInterface{
 				} catch (SQLException e) {
 				}
 			}
-			if (conn != null) {
+			if (connection != null) {
 				try {
-					conn.close();
+					connection.close();
 				} catch (SQLException e) {
 				}
 			}
@@ -264,12 +264,12 @@ public class StoreDAO implements StoreInterface{
 		connectServer();
 
 		try {
-			conn = DriverManager.getConnection(url, user, password);
+			connection = DriverManager.getConnection(url, user, password);
 
 			String updateMenu = " UPDATE MENU \r\n"
 							   + "    SET name = ?, price = ? \r\n"
 							   + "  WHERE name = ?";
-			PreparedStatement preparedStatement = conn.prepareStatement(updateMenu);
+			PreparedStatement preparedStatement = connection.prepareStatement(updateMenu);
 			preparedStatement.setString(1, menuDTO.getName());
 			preparedStatement.setInt(2, menuDTO.getPrice());
 			preparedStatement.setString(3, menuDTO.getBeforeName());
@@ -279,8 +279,8 @@ public class StoreDAO implements StoreInterface{
 		} catch (SQLException e) {
 		} finally {
 			try {
-				if (conn != null) {
-					conn.close();
+				if (connection != null) {
+					connection.close();
 				}
 			} catch (SQLException e) {
 			}
@@ -293,12 +293,12 @@ public class StoreDAO implements StoreInterface{
 		connectServer();
 
 		try {
-			conn = DriverManager.getConnection(url, user, password);
+			connection = DriverManager.getConnection(url, user, password);
 
 			String updateQuery = "DELETE \r\n"
 							   + "  FROM MENU\r\n"
 							   + " WHERE no = ?";
-			PreparedStatement preparedStatement = conn.prepareStatement(updateQuery);
+			PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
 			preparedStatement.setInt(1, menuDTO.getNo());
 			preparedStatement.executeUpdate();
 			System.out.println("메뉴 삭제 완료");
@@ -306,12 +306,12 @@ public class StoreDAO implements StoreInterface{
 		} catch (SQLException e) {
 		} finally {
 			try {
-				if (conn != null) {
-					conn.close();
+				if (connection != null) {
+					connection.close();
 				}
 			} catch (SQLException e) {
 			}
 		}
 	}
-	
+
 }
