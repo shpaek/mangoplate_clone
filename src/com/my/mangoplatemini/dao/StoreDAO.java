@@ -11,6 +11,9 @@ import com.my.mangoplatemini.dto.StoreDTO;
 public class StoreDAO implements StoreInterface{
 	@Override
 	public void createStore(StoreDTO store) {
+		//로그인한 사용자의 아이디 가져오기
+		String id = "sh"; //수정필요!!
+		
 		//1. 드라이버클래스들 JVM에 로드
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
@@ -43,7 +46,7 @@ public class StoreDAO implements StoreInterface{
 			
 			pstmt = conn.prepareStatement(insertSQL);
 			pstmt.setString(1, store.getBusiness_no());
-			pstmt.setString(2, store.getUser_id());
+			pstmt.setString(2, id);
 			pstmt.setString(3, store.getName());
 			pstmt.setString(4, store.getAddress());
 			pstmt.setString(5, store.getPrice());
@@ -161,7 +164,7 @@ public class StoreDAO implements StoreInterface{
 		} else {
 			String selectSQL = "SELECT name, approve\r\n"
 					+ "FROM STORE\r\n"
-					+ "WHERE user_id = ?;";
+					+ "WHERE user_id = ?";
 			
 			try {
 				pstmt = conn.prepareStatement(selectSQL);
