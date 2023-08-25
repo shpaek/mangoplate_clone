@@ -14,7 +14,7 @@ public class ReviewDAO implements ReviewInterface {
 		
 		// JDBC 드라이버 로드
 		try {
-			Class.forName("oralce.jdbc.OracleDriver");
+			Class.forName("oracle.jdbc.OracleDriver");
 			System.out.println("JDBC드라이버 연결에 성공했습니다 :)");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -43,13 +43,21 @@ public class ReviewDAO implements ReviewInterface {
 		// SQL문 송신
 		try {
 			
-			pstmt = conn.prepareStatement(insertSQL); 
-			pstmt.setString(1, "12345678ㅈ90"); // Controller에서 매개변수로 전달받은 busniessNo 넣기
-			pstmt.setString(2, "찬돌");			// Controller에서 매개변수로 전달받은 userId 넣기
-			pstmt.setString(3, "왈왈왈");		// Controller에서 매개변수로 전달받은 content 넣기
-			pstmt.setInt(4, 1);					// Controller에서 매개변수로 전달받은 grade 넣기
+//			pstmt = conn.prepareStatement(insertSQL); 
+//			pstmt.setString(1, "12345678ㅈ90"); // Controller에서 매개변수로 전달받은 busniessNo 넣기
+//			pstmt.setString(2, "찬돌");			// Controller에서 매개변수로 전달받은 userId 넣기
+//			pstmt.setString(3, "왈왈왈");		// Controller에서 매개변수로 전달받은 content 넣기
+//			pstmt.setInt(4, 1);					// Controller에서 매개변수로 전달받은 grade 넣기
+//			
+//			pstmt.executeLargeUpdate();		// 반환된 업데이트 횟수 실행
 			
-			pstmt.executeLargeUpdate();		// 반환된 업데이트 횟수 실행
+			pstmt = conn.prepareStatement(insertSQL);
+			pstmt.setString(1, reivewDTO.getBusiness_no());
+			pstmt.setString(2, reivewDTO.getUser_id());
+			pstmt.setNString(3, reivewDTO.getContent());
+			pstmt.setInt(4, reivewDTO.getRating());
+			
+			pstmt.executeLargeUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
