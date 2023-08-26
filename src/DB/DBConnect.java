@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+
+// 객체생성해서 코드 효율적으로 가능한가?
+
 public class DBConnect {
 		//db 연결을 객체로 만들자
 	   public Connection conn = null; // 데이터베이스 연결을 관리하기 위한 객체
