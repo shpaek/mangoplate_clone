@@ -11,14 +11,16 @@ public class main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Member> members = new ArrayList<>();
+        int lastInput = -1; // 마지막 입력 상태를 저장하는 변수
 
         while (true) {
             System.out.println("------- 안녕하세요 망고플레이트입니다. -------");
             System.out.println("1. 로그인");
             System.out.println("2. 회원가입");
+         
             int input = scanner.nextInt();
             scanner.nextLine();
-
+                        
             if (input == 1) {            	
                 boolean logIn = false;
                 while (!logIn) {
@@ -43,10 +45,11 @@ public class main {
             } else if (input == 2) {
             	System.out.println("아이디를 입력해주세요");
                 String newId = scanner.nextLine();
+                
                 //db연결로 member m=<--"SELECT id, pw FROM member WHERE id="+newId;
                 //members.indexOf(m) <-- 중복됐을때메세지 출력하기위함
                 
-                System.out.println("비밀번호를 입력해주세요");
+                System.out.println("비밀번호를 입력해주세요");                                      
                 
                 
                 // 회원가입 기능 구현해야함..

@@ -1,5 +1,7 @@
 package com.my.mangoplatemini.dao;
 
-public class StoreDAO {
 
+
+public class StoreDAO {
+	
 }

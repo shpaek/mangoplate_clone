@@ -5,15 +5,13 @@ public class MemberDTO {
 	
 	private Integer user_type;
 	// 점주 , 사용자 
-	
 	private String id;
 	private String password;
 	private String email;
 	private String name;
 	private String tel;
 	
-	private Integer user_status; 
-	
+	private Integer 	user_status; 
 	//1 -> 0
 	
 	

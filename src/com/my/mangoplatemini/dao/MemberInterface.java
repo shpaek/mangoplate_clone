@@ -11,6 +11,8 @@ import com.my.mangoplatemini.dto.MemberDTO;
 		    
 		void deleteMember(String memberId);
 		    // 회원 삭제
+
+		void deleteMember(MemberDTO member);
 	
 //삽입 : create
 //수정 : update
