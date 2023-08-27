@@ -75,7 +75,7 @@ public class MemberDAO implements MemberInterface {
 
 		// 4. SQL구문 송신
 		PreparedStatement pstmt = null;
-		String insertSQL = "INSERT INTO customer(password, email, name, tel) VALUES (?,?,?,?)";
+		String insertSQL = "UPDATE INTO customer(password, email, name, tel) VALUES (?,?,?,?)";
 		try {
 			pstmt = conn.prepareStatement(insertSQL);
 			pstmt.setString(1, member.getPassword());
@@ -108,10 +108,5 @@ public class MemberDAO implements MemberInterface {
 
 	}
 
-	@Override
-	public void deleteMember(String memberId) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }
