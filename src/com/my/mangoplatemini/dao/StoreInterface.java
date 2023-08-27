@@ -1,8 +1,6 @@
 package com.my.mangoplatemini.dao;
 
-import java.sql.ResultSet;
-import java.util.List;
-
+import com.my.mangoplatemini.dto.MenuDTO;
 import com.my.mangoplatemini.dto.StoreDTO;
 
 public interface StoreInterface {
@@ -22,5 +20,14 @@ public interface StoreInterface {
 	public void deleteStore(String name);
 
 	public StoreDTO showStoreOne(String business_no);
-
+	
+	void createMenu(MenuDTO menuDTO);
+	
+	void showMenu(String business_no);
+	
+	void updateMenu(MenuDTO menuDTO);
+	
+	void deleteMenu(MenuDTO menuDTO);
+	
 }
+
