@@ -1,4 +1,4 @@
-package com.my.mangoplatemini.dao;
+	package com.my.mangoplatemini.dao;
 
 public class StoreDAO {
 
