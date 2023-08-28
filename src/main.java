@@ -1,4 +1,4 @@
-import com.my.mangoplatemini.controller.MemberController;
+
 import com.my.mangoplatemini.controller.ReviewController;
 
 public class main {
