@@ -21,7 +21,7 @@ public class DBConnect {
 	      // DB와 연결
 	      // java.sql.Connection 라이브러리
 
-	      String url = "jdbc:oracle:thin:@localhost:1521:xe"; // 로컬에 있는 오라클 DB url 넘김
+	      String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe"; // 로컬에 있는 오라클 DB url 넘김
 	      String user = "mango";
 	      String password = "mango";
 

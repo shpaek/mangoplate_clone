@@ -3,12 +3,13 @@ import com.my.mangoplatemini.dto.MemberDTO;
 	
 	public interface MemberInterface {
 		
+		void login(MemberDTO memberDTO);
+		
 		void createMember(MemberDTO member);
 	    // 회원 가입
 		    
 		void updateMember(MemberDTO member);
-	    // 회원 정보 수정
-		    
+	    // 회원 정보 수정		    
 		
 		void deleteMember(MemberDTO member);
 		// 회원 삭제
