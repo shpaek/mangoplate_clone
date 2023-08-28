@@ -26,6 +26,7 @@ public interface StoreInterface {
 	 */
 	public void showByStoreName(String name);
 	
+	
 	//홍식
 	/*
 	 * 스토어의 상세정보를 볼 수 있다.
@@ -44,11 +45,11 @@ public interface StoreInterface {
 	 */
 	public void deleteStore(String name);
 
-
 	/*
 	 * 스토어 하나의 정보를 가져올 수 있다.
 	 */
 	public StoreDTO showStoreOne(String business_no);
+	
 	
     //학윤
     /*
