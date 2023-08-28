@@ -1,5 +1,7 @@
 package com.my.mangoplatemini.dao;
 
+public class StoreDAO {
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -600,4 +602,5 @@ public class StoreDAO implements StoreInterface {
             }
         }
     }
+
 }
