@@ -117,6 +117,7 @@ public class StoreController {
 		}
 		}
 	}
+	
 
 	// 상점 정보 수정
 	public void updateStore(StoreDTO previewDTO) {
