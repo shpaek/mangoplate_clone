@@ -11,8 +11,8 @@ public class StoreController {
 	private StoreInterface storeDAO = new StoreDAO();
 	Scanner scanner = new Scanner(System.in);
 	
-	//상점등록하기
 	
+	//상점등록
 	public void createStore(StoreDTO store) {
 		
 		System.out.println("사업자등록번호를 입력하세요.(숫자 10자리)");
@@ -60,6 +60,8 @@ public class StoreController {
 		storeDAO.createStore(store);
 	}
 	
+	
+	//상점목록조회
 	public void showStore(int appr) {
 		System.out.println("1.미승인 2.승인 3.전체보기 4.상점이름으로 검색");
 		String input = scanner.nextLine();
@@ -85,6 +87,8 @@ public class StoreController {
 		
 	}
 	
+	
+	//상점검색
 	public void showByStoreName(String name) {
 		String sName = scanner.nextLine();
 		name = sName;

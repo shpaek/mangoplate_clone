@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import com.my.mangoplatemini.dto.StoreDTO;
 
 public class StoreDAO implements StoreInterface{
+	
+	//서현
+	//상점등록
 	@Override
 	public void createStore(StoreDTO store) {
 		//로그인한 사용자의 아이디 가져오기
@@ -80,6 +83,8 @@ public class StoreDAO implements StoreInterface{
 
 	}
 	
+	
+	//상점목록조회	
 	@Override
 	public void showStore(int appr) {
 		//로그인한 사용자의 아이디 가져오기
@@ -210,7 +215,7 @@ public class StoreDAO implements StoreInterface{
 	}
 						
 
-
+	//상점검색
 	@Override
 	public void showByStoreName(String name) {
 		//로그인한 사용자의 아이디 가져오기
