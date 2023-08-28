@@ -8,8 +8,6 @@ import java.sql.SQLException;
 
 import com.my.mangoplatemini.dto.MemberDTO;
 
-import DB.DBConnect;
-
 public class MemberDAO implements MemberInterface {
 	
 	@Override
@@ -59,16 +57,26 @@ public class MemberDAO implements MemberInterface {
 		}
 		
 	}
-
+		// 3. DB와 연결
 	@Override
 	public void createMember(MemberDTO member) {
-		// insert
+		
+		// JDBC 드라이버 로드
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			System.out.println("JDBC드라이버 연결에 성공했습니다 :)");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return;
+		} // try-catch
+		
+		// DB연결
 
-		// 3. DB와 연결
 		Connection conn = null;
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String user = "mango";
 		String password = "mango";
+
 		try {
 			conn = DriverManager.getConnection(url, user, password);
 			System.out.println("DB 접속 성공");
@@ -90,8 +98,8 @@ public class MemberDAO implements MemberInterface {
 			pstmt.setString(5, member.getTel());
 			pstmt.setInt(6, member.getUser_type());
 			pstmt.setInt(7,1);
-			int s = pstmt.executeUpdate();
-			System.out.println("가입이 완료되었습니다" + s);
+			pstmt.executeUpdate();
+			System.out.println("가입이 완료되었습니다");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -113,10 +121,21 @@ public class MemberDAO implements MemberInterface {
 	@Override
 	public void updateMember(MemberDTO member) {
 		// modify
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			System.out.println("JDBC드라이버 연결에 성공했습니다 :)");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return;
+		} // try-catch
+		
+		// DB연결
+
 		Connection conn = null;
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String user = "mango";
 		String password = "mango";
+
 		try {
 			conn = DriverManager.getConnection(url, user, password);
 			System.out.println("DB 접속 성공");
@@ -155,16 +174,30 @@ public class MemberDAO implements MemberInterface {
 
 	
 	@Override
-	public void deleteMember(MemberDTO member) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void createMember(String string, String string2, String string3, String string4, String string5) {
+	public void deleteMember(MemberDTO memberDTO) {
 		// TODO Auto-generated method stub
 		
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			System.out.println("JDBC드라이버 연결에 성공했습니다 :)");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return;
+		} // try-catch
+		
+		// DB연결
+
+		Connection conn = null;
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "mango";
+		String password = "mango";
+
+		try {
+			conn = DriverManager.getConnection(url, user, password);
+			System.out.println("DB 접속 성공");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
-
-
-
+	
 }

@@ -55,7 +55,7 @@ public class MemberDTO {
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
-	public int getStatus() {
+	public int getUser_Status() {
 		return user_status;
 	}
 	public void setStatus(int status) {
