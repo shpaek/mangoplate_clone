@@ -37,7 +37,6 @@ public class StoreController {
 		System.out.println("수정할 사항을 입력해주세요.");
 		System.out.println("1.오픈시간, 2.마감시간 3.가게정보 4.주차여부 5.가격대");
 		String input = scanner.nextLine();
-		System.out.println(previewDTO.getParking());
 		switch (input) {
 		case "오픈시간":
 			System.out.println("수정할 오픈시간을 입력하세요");
