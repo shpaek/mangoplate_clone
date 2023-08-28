@@ -12,8 +12,8 @@ public class main {
 		// 리뷰
 		ReviewController rc = new ReviewController();
 		
-		String userId = "찬돌";
-		String businessNo = "1234567890";
+		String userId = "sh";
+		String businessNo = "1234567899";
 		
 		rc.createReview(userId, businessNo);
 		
