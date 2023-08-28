@@ -14,7 +14,7 @@ public interface MemberInterface {
 	void updateMember(MemberDTO member);
     // 회원 정보 수정		    
 	
-	void deleteMember(MemberDTO member);
+	void deleteMember(String id);
 	// 회원 삭제
 }
 //삽입 : create

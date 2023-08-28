@@ -1,10 +1,5 @@
 package com.my.mangoplatemini.dao;
 
-<<<<<<< HEAD
-=======
-public class StoreDAO {
-
->>>>>>> b96df20a8aa98539dd13807f60ab30238e5f6fe7
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

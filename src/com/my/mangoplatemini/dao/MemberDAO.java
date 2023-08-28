@@ -118,6 +118,9 @@ public class MemberDAO implements MemberInterface {
 		}
 	}
 
+	
+	
+	
 	@Override
 	public void updateMember(MemberDTO member) {
 		// modify
@@ -145,13 +148,15 @@ public class MemberDAO implements MemberInterface {
 
 		// 4. SQL구문 송신 
 		PreparedStatement pstmt = null;
-		String insertSQL = "UPDATE MEMBER (password, email, name, tel) VALUES (?,?,?,?)";
+		String insertSQL = "UPDATE MEMBER "
+				+ "set password = ? , email = ? , name= ? , tel = ? WHERE id = ? ";
 		try {
 			pstmt = conn.prepareStatement(insertSQL);
 			pstmt.setString(1, member.getPassword());
 			pstmt.setString(2, member.getEmail());
 			pstmt.setString(3, member.getName());
 			pstmt.setString(4, member.getTel());
+			pstmt.setString(5,member.getId());
 			int rowcnt = pstmt.executeUpdate();
 			System.out.println(rowcnt + "수정이 완료되었습니다");
 		} catch (SQLException e) {
@@ -173,8 +178,10 @@ public class MemberDAO implements MemberInterface {
 	}
 
 	
+	
+	
 	@Override
-	public void deleteMember(MemberDTO memberDTO) {
+	public void deleteMember(String id) {
 		// TODO Auto-generated method stub
 		
 		try {
@@ -192,12 +199,32 @@ public class MemberDAO implements MemberInterface {
 		String user = "mango";
 		String password = "mango";
 
+		
 		try {
 			conn = DriverManager.getConnection(url, user, password);
 			System.out.println("DB 접속 성공");
-		} catch (SQLException e) {
-			e.printStackTrace();
+			
+			  String updateQuery = "UPDATE member SET user_status = 0 WHERE ID = ?";
+
+		        try (PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
+		            pstmt.setString(1, id);
+		            int doracc = pstmt.executeUpdate(); 
+		            if (doracc > 0) {
+		                System.out.println("회원 비활성화 완료.");
+		            } else {
+		                System.out.println("해당 회원을 찾을 수 없거나 이미 비활성화되었습니다.");
+		            }
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        try {
+		            if (conn != null) {
+		                conn.close();
+		            }
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+		    }
 		}
-	}
-	
 }
