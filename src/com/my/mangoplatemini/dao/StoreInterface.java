@@ -21,13 +21,25 @@ public interface StoreInterface {
 
 	public StoreDTO showStoreOne(String business_no);
 	
-	void createMenu(MenuDTO menuDTO);
-	
-	void showMenu(String business_no);
-	
-	void updateMenu(MenuDTO menuDTO);
-	
-	void deleteMenu(MenuDTO menuDTO);
-	
-}
+    //학윤
+    /*
+     *로그인한 아이디의 사업자등록번호에 대한 가게 메뉴를 생성한다.
+     */
+    void createMenu(MenuDTO menuDTO);
 
+    /*
+     *로그인한 아이디의 사업자등록번호에 대한 가게 메뉴를 보여준다.
+     */
+    void showMenu(String business_no);
+
+    /*
+     *로그인한 아이디의 사업자등록번호에 대한 가게 메뉴를 수정한다.
+     */
+    void updateMenu(MenuDTO menuDTO);
+
+    /*
+     *로그인한 아이디의 사업자등록번호에 대한 가게 메뉴를 삭제한다.
+     */
+    void deleteMenu(MenuDTO menuDTO);
+
+}

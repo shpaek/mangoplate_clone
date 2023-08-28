@@ -1,5 +1,6 @@
 package com.my.mangoplatemini.controller;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 import com.my.mangoplatemini.dao.StoreDAO;
@@ -83,77 +84,93 @@ public class StoreController {
 	}
 
 	
-	//학윤
-	// 메뉴 등록
-	public void crateMenu(String business_no) {
-		MenuDTO menuDTO = new MenuDTO();
-		
-		menuDTO.setBusiness_no(business_no);
-		
-		System.out.println("등록하실 메뉴의 이름을 입력해주세요.");
-		String name = scanner.nextLine();
-		menuDTO.setName(name);
+    //학윤
+    // 메뉴 등록
+    public void crateMenu(String business_no) {
+        MenuDTO menuDTO = new MenuDTO();
 
-		System.out.println("등록하실 메뉴의 가격을 입력해주세요.");
-		Integer price = Integer.parseInt(scanner.nextLine());
-		menuDTO.setPrice(price);
+        menuDTO.setBusiness_no(business_no);
 
-		storeDAO.createMenu(menuDTO);
-	}
+        System.out.println(" ");
+        System.out.println("등록하실 메뉴의 이름을 입력해주세요.");
+        String name = scanner.nextLine();
+        menuDTO.setName(name);
 
-	// 메뉴 조회
-	public void showMenu(String business_no) {
-		storeDAO.showMenu(business_no);
+        System.out.println(" ");
+        System.out.println("등록하실 메뉴의 가격을 입력해주세요.");
+        Integer price = Integer.parseInt(scanner.nextLine());
+        menuDTO.setPrice(price);
 
-		int no;
+        storeDAO.createMenu(menuDTO);
+        showMenu(business_no);
+    }
 
-		while (true) {
-			System.out.println("1. 메뉴 등록    2.메뉴 수정    3. 메뉴 삭제");
-			no = Integer.parseInt(scanner.nextLine());
-			if (no == 1) {
-				crateMenu(business_no);
-				break;
-			} else if (no == 2) {
-				updateMenu();
-				break;
-			} else if (no == 3) {
-				deleteMenu();
-				break;
-			}
-			else {
-				System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
-			}
-		}
-	}
+    // 메뉴 조회
+    public void showMenu(String business_no) {
 
-	// 메뉴 수정
-	public void updateMenu() {
-		MenuDTO menuDTO = new MenuDTO();
+        storeDAO.showMenu(business_no);
 
-		System.out.println("수정하실 메뉴의 이름을 입력해주세요.");
-		String beforeName = scanner.nextLine();
-		menuDTO.setBeforeName(beforeName);
+        String no;
 
-		System.out.println("수정 후 메뉴의 이름을 입력해주세요.");
-		String name = scanner.nextLine();
-		menuDTO.setName(name);
+        while (true) {
+            System.out.println(" ");
+            System.out.println("1. 메뉴 등록    2.메뉴 수정    3. 메뉴 삭제    4. 이전 화면");
+            no = scanner.nextLine();
+            if (Objects.equals(no, "1")) {
+                crateMenu(business_no);
+                break;
+            } else if (Objects.equals(no, "2")) {
+                updateMenu(business_no);
+                break;
+            } else if (Objects.equals(no, "3")) {
+                deleteMenu(business_no);
+                break;
+            } else if (Objects.equals(no, "4")) {
+                showStoreDetail(business_no);
+            } else {
+                System.out.println(" ");
+                System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+            }
+        }
+    }
 
-		System.out.println("수정 후 메뉴의 가격을 입력해주세요.");
-		Integer price = Integer.parseInt(scanner.nextLine());
-		menuDTO.setPrice(price);
+    // 메뉴 수정
+    public void updateMenu(String business_no) {
+        MenuDTO menuDTO = new MenuDTO();
 
-		storeDAO.updateMenu(menuDTO);
-	}
+        System.out.println(" ");
+        System.out.println("수정하실 메뉴의 번호를 입력해주세요.");
+        Integer no = Integer.parseInt(scanner.nextLine());
+        menuDTO.setNo(no);
 
-	// 메뉴 삭제
-	public void deleteMenu() {
-		MenuDTO menuDTO = new MenuDTO();
+        System.out.println(" ");
+        System.out.println("수정 후 메뉴의 이름을 입력해주세요.");
+        String name = scanner.nextLine();
+        menuDTO.setName(name);
 
-		System.out.println("삭제하실 메뉴의 번호를 입력해주세요.");
-		int no = scanner.nextInt();
-		menuDTO.setNo(no);
+        System.out.println(" ");
+        System.out.println("수정 후 메뉴의 가격을 입력해주세요.");
+        Integer price = Integer.parseInt(scanner.nextLine());
+        menuDTO.setPrice(price);
 
-		storeDAO.deleteMenu(menuDTO);
-	}
+        storeDAO.updateMenu(menuDTO);
+        showMenu(business_no);
+    }
+
+
+    // 메뉴 삭제
+    public void deleteMenu(String business_no) {
+        MenuDTO menuDTO = new MenuDTO();
+
+
+        System.out.println(" ");
+        System.out.println("삭제하실 메뉴의 번호를 입력해주세요.");
+        int no = Integer.parseInt(scanner.nextLine());
+
+        menuDTO.setNo(no);
+
+        storeDAO.deleteMenu(menuDTO);
+        showMenu(business_no);
+    }
 
 }
