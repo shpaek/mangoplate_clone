@@ -10,6 +10,7 @@ public class MenuDTO {
 	private String name;
 	private String beforeName;
 	private Integer price;
+	
 	public Integer getNo() {
 		return no;
 	}
