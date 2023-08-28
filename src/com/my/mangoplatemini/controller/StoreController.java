@@ -16,44 +16,53 @@ public class StoreController {
 	public void showStoreDetail(String business_no) {
 		storeDAO.showStoreDetail(business_no);
 		StoreDTO priviewDTO = new StoreDTO();
+		while(true) {
 		System.out.println("1.메뉴보기 2.상점수정하기 3.상점 삭제하기");
 		String input = scanner.nextLine();
-		switch (input) {
-		case "1":
+		if (input.equals("1")) {
 			showMenu(business_no);
-		case "2":
+			break;
+		}else if(input.equals("2")){
 			priviewDTO = storeDAO.showStoreOne(business_no);
 			updateStore(priviewDTO);
 			break;
-		case "3":
+		}else if(input.equals("3")){
 			deleteStore(business_no);
 			break;
+		}else {
+			System.out.println("잘못된 입력입니다.다시 입력해 주세요.");
+		}
 		}
 	}
 
 	// 상점 정보 수정
 	public void updateStore(StoreDTO previewDTO) {
+		int correct = 0;
 
+		while(true) {
 		System.out.println("수정할 사항을 입력해주세요.");
 		System.out.println("1.오픈시간, 2.마감시간 3.가게정보 4.주차여부 5.가격대");
-		String input = scanner.nextLine();
+		String input = scanner.nextLine();	
 		switch (input) {
 		case "오픈시간":
 			System.out.println("수정할 오픈시간을 입력하세요");
 			String open_time = scanner.nextLine();
 			previewDTO.setOpen_time(open_time);
+			correct = 0;
 			break;
 
 		case "마감시간":
 			System.out.println("수정할 마감시간을 입력하세요");
 			String close_time = scanner.nextLine();
 			previewDTO.setClose_time(close_time);
+			correct = 0;
 			break;
 
 		case "가게정보":
 			System.out.println("수정할 가게정보을 입력하세요");
 			String info = scanner.nextLine();
 			previewDTO.setInfo(info);
+			correct = 0;
 			break;
 
 		case "주차여부":
@@ -62,17 +71,27 @@ public class StoreController {
 			previewDTO.setParking(parking);
 			System.out.println(parking);
 			System.out.println(previewDTO.getBusiness_no());
+			correct = 0;
 			break;
 
 		case "가격대":
 			System.out.println("수정할 가격대를 입력하세요");
 			String price = scanner.nextLine();
 			previewDTO.setPrice(price);
+			correct = 0;
 			break;
+		
+		default :
+			System.out.println("잘못된입력입니다.");
+			correct = 1;
+			
 		}
-
+		if (correct == 0) {
 		storeDAO.updateStore(previewDTO);
 		System.out.println("수정되었습니다.");
+			break;
+		}
+		}
 	}
 
 	// 상점 삭제
