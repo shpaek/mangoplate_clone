@@ -1,9 +1,15 @@
+import com.my.mangoplatemini.controller.MemberController;
 import com.my.mangoplatemini.controller.ReviewController;
 
 public class main {
 	
 	public static void main(String[] args) {
 		
+//		StoreController storeController = new StoreController();
+//		
+//		storeController.showStoreDetail("1");
+		
+		// 리뷰
 		ReviewController rc = new ReviewController();
 		
 		String userId = "찬돌";
@@ -13,7 +19,7 @@ public class main {
 		
 		
 		// ========================================
-		
 	} // main
 	
 } // end class
+

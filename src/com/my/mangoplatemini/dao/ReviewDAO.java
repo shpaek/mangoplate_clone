@@ -8,14 +8,13 @@ import java.sql.SQLException;
 import com.my.mangoplatemini.dto.ReviewDTO;
 
 public class ReviewDAO implements ReviewInterface {
-
+	
 	@Override
 	public void createReview(ReviewDTO reivewDTO) {
 		
 		// JDBC 드라이버 로드
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
-			System.out.println("JDBC드라이버 연결에 성공했습니다 :)");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			return;
@@ -29,7 +28,6 @@ public class ReviewDAO implements ReviewInterface {
 		
 		try {
 			conn = DriverManager.getConnection(url, user, password);
-			System.out.println("DB에 연결이 되었습니다 :-)");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} // trt-catch
@@ -53,6 +51,8 @@ public class ReviewDAO implements ReviewInterface {
 			
 			System.out.println("리뷰가 등록되었습니다.");
 			
+//			StoreDAO.showStoreDetail(reivewDTO.getBusiness_no());
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -74,8 +74,7 @@ public class ReviewDAO implements ReviewInterface {
 			} // conn
 			
 		} // try-catch-finally
-		
-		
+
 	} //createReview
 
 } // end class

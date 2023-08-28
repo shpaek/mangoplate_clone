@@ -15,9 +15,10 @@ public interface MemberInterface {
 	
 	// 회원 삭제 메서드
 	public void deleteMember(MemberDTO memberDTO);
+	
 //삽입 : create
 //수정 : update
 //삭제 : delete
 //보여줌 : show
-//
+	
 } // endclass
