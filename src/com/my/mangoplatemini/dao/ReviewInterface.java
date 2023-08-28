@@ -7,4 +7,4 @@ public interface ReviewInterface {
 	// 리뷰 작성
 	public void createReview(ReviewDTO reivewDTO);
 	
-} // end calss
+}

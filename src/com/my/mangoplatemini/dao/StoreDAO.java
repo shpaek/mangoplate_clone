@@ -10,7 +10,7 @@ import com.my.mangoplatemini.dto.MenuDTO;
 import com.my.mangoplatemini.dto.StoreDTO;
 
 public class StoreDAO implements StoreInterface {
-
+		
 	// 서현
 	// 상점등록
 	@Override
