@@ -1,5 +1,6 @@
 package com.my.mangoplatemini.dao;
 
+
 public class StoreDAO {
 
 import java.sql.Connection;
