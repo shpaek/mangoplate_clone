@@ -45,7 +45,6 @@ public class StoreDAO implements StoreInterface{
 			preparedStatement.setString(6, storeDTO.getBusiness_no());
 			
 			int rowCnt = preparedStatement.executeUpdate();
-			System.out.println(rowCnt);
 			connection.close();
 		}catch (Exception e) {
 			e.printStackTrace();
