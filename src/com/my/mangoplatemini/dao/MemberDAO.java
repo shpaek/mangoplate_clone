@@ -12,10 +12,12 @@ public class MemberDAO implements MemberInterface {
 	
 	@Override
 	public void login(MemberDTO member) {
+		
+		
 		Connection conn = null;
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String user = "mango";
-		String password = "mango";
+		String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
+		String user = "msa1";
+		String password = "msa1";
 		try {
 			conn = DriverManager.getConnection(url, user, password);
 			System.out.println("DB 접속 성공");
@@ -73,9 +75,9 @@ public class MemberDAO implements MemberInterface {
 		// DB연결
 
 		Connection conn = null;
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String user = "mango";
-		String password = "mango";
+		String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
+		String user = "msa1";
+		String password = "msa1";
 
 		try {
 			conn = DriverManager.getConnection(url, user, password);
@@ -100,6 +102,9 @@ public class MemberDAO implements MemberInterface {
 			pstmt.setInt(7,1);
 			pstmt.executeUpdate();
 			System.out.println("가입이 완료되었습니다");
+			
+//			this.login();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -135,9 +140,9 @@ public class MemberDAO implements MemberInterface {
 		// DB연결
 
 		Connection conn = null;
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String user = "mango";
-		String password = "mango";
+		String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
+		String user = "msa1";
+		String password = "msa1";
 
 		try {
 			conn = DriverManager.getConnection(url, user, password);
@@ -195,9 +200,9 @@ public class MemberDAO implements MemberInterface {
 		// DB연결
 
 		Connection conn = null;
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String user = "mango";
-		String password = "mango";
+		String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
+		String user = "msa1";
+		String password = "msa1";
 
 		
 		try {

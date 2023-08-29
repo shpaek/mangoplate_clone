@@ -11,9 +11,10 @@ public class ReviewDAO implements ReviewInterface {
 	// 공통
 	// DB정보
 	Connection conn = null;
-	String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
-	String user = "msa1";
-	String password = "msa1";
+//	String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
+	String url = "jdbc:oracle:thin:@localhost:1521:xe";
+	String user = "mango";
+	String password = "mango";
 
 	// 서버 연결
 	public void connectServer() {
@@ -42,8 +43,13 @@ public class ReviewDAO implements ReviewInterface {
 		// SQL문 송신 객체 생성
 		PreparedStatement pstmt = null;
 		String insertSQL = "INSERT INTO review(no, business_no, user_id, content, review_date, rating)"
-				+ "VALUES(review_seq.NEXTVAL, ?, ?, ?, SYSDATE, ?)";
+				+ "VALUES(emp_seq.NEXTVAL, ?, ?, ?, SYSDATE, ?)"; // review_seq.NEXTVAL
 		// business_no랑 user_id는 가져오는 값.. 수정 필요..
+		
+//		PreparedStatement cpstmt = null;
+//		String countSQL = "UPDATE store"
+//				+ "SET review_cnt = review_cnt + 1"
+//				+ "WEHRE business_no = ?";
 
 		// SQL문 송신
 		try {
@@ -51,12 +57,17 @@ public class ReviewDAO implements ReviewInterface {
 			pstmt = conn.prepareStatement(insertSQL);
 			pstmt.setString(1, reivewDTO.getBusiness_no()); // Controller에서 매개변수로 전달받은 busniessNo 넣기
 			pstmt.setString(2, reivewDTO.getUser_id()); // Controller에서 매개변수로 전달받은 userId 넣기
-			pstmt.setNString(3, reivewDTO.getContent()); // Controller에서 매개변수로 전달받은 content 넣기
+			pstmt.setString(3, reivewDTO.getContent()); // Controller에서 매개변수로 전달받은 content 넣기
 			pstmt.setInt(4, reivewDTO.getRating()); // Controller에서 매개변수로 전달받은 grade 넣기
 
 			pstmt.executeLargeUpdate(); // 반환된 업데이트 횟수 실행
 
 			System.out.println("리뷰가 등록되었습니다.");
+			
+//			cpstmt = conn.prepareStatement(countSQL);
+//			cpstmt.setString(1, reivewDTO.getBusiness_no());
+//			cpstmt.executeLargeUpdate();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
