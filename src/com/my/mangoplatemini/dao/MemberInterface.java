@@ -6,7 +6,7 @@ public interface MemberInterface {
 	
 	// 회원가입 메서드
 	
-	void login(MemberDTO memberDTO);
+	void login(MemberDTO member);
 	
 	void createMember(MemberDTO member);
     // 회원 가입

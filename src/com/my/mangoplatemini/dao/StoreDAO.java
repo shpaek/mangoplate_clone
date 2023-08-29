@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.my.mangoplatemini.dto.MemberDTO;
 import com.my.mangoplatemini.dto.MenuDTO;
 import com.my.mangoplatemini.dto.StoreDTO;
 
@@ -14,9 +15,9 @@ public class StoreDAO implements StoreInterface {
 	// 서현
 	// 상점등록
 	@Override
-	public void createStore(StoreDTO store) {
+	public void createStore(MemberDTO member, StoreDTO store) {
 		// 로그인한 사용자의 아이디 가져오기
-		String id = "sh"; // 수정필요!!
+		String id = member.getId(); // 수정필요!!
 
 		// 1. 드라이버클래스들 JVM에 로드
 		try {
@@ -83,13 +84,12 @@ public class StoreDAO implements StoreInterface {
 		}
 
 	}
+	
 
-	// 상점목록조회
+	// 점주상점목록조회
 	@Override
-	public void showStore(int appr) {
-		// 로그인한 사용자의 아이디 가져오기
-		String id = "sh"; // 수정필요!!
-
+	public void showStore(MemberDTO member) {
+		String id = member.getId();
 		// 1. 드라이버클래스들 JVM에 로드
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
@@ -119,91 +119,118 @@ public class StoreDAO implements StoreInterface {
 		// 4.SQL문 결과 수신하기
 		ResultSet rs = null;
 
-		if (appr == 0 || appr == 1) {
-			String selectSQL = "SELECT name, approve\r\n" + "FROM STORE\r\n" + "WHERE user_id = ? AND approve = ?";
 
-			try {
-				pstmt = conn.prepareStatement(selectSQL);
-				pstmt.setString(1, id);
-				pstmt.setInt(2, appr);
-				rs = pstmt.executeQuery();
+		String selectSQL = "SELECT name, approve FROM STORE WHERE user_id = ?";
 
-				while (rs.next()) {
-					String name = rs.getString(1);
-					int approve = rs.getInt(2);
+		try {
+			pstmt = conn.prepareStatement(selectSQL);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
 
-					if (approve == 0) {
-						System.out.println(name + "    미승인");
-					} else {
-						System.out.println(name + "    승인");
-					}
-				}
-				System.out.println("조회완료");
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				if (rs != null) {
-					try {
-						rs.close();
-					} catch (SQLException e) {
-					}
-				}
+			while (rs.next()) {
+				String name = rs.getString(1);
+				int approve = rs.getInt(2);
 
-				if (pstmt != null) {
-					try {
-						pstmt.close();
-					} catch (SQLException e) {
-					}
-				}
-
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {
-					}
+				if (approve == 0) {
+					System.out.println(name + "    미승인");
+				} else {
+					System.out.println(name + "    승인");
 				}
 			}
-		} else {
-			String selectSQL = "SELECT name, approve\r\n" + "FROM STORE\r\n" + "WHERE user_id = ?";
-
-			try {
-				pstmt = conn.prepareStatement(selectSQL);
-				pstmt.setString(1, id);
-				rs = pstmt.executeQuery();
-
-				while (rs.next()) {
-					String name = rs.getString(1);
-					int approve = rs.getInt(2);
-
-					if (approve == 0) {
-						System.out.println(name + "    미승인");
-					} else {
-						System.out.println(name + "    승인");
-					}
+			System.out.println("조회완료");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
 				}
-				System.out.println("조회완료");
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				if (rs != null) {
-					try {
-						rs.close();
-					} catch (SQLException e) {
-					}
-				}
+			}
 
-				if (pstmt != null) {
-					try {
-						pstmt.close();
-					} catch (SQLException e) {
-					}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
 				}
+			}
 
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {
-					}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+
+
+	}
+	
+	// 전체상점목록조회
+	@Override
+	public void showStoreAll(StoreDTO storeDTO) {
+		// 1. 드라이버클래스들 JVM에 로드
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			System.out.println("JDBC드라이버 로드성공");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		// 2.DB와 연결
+		Connection conn = null;
+		// ip바꿔주기
+		String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
+		String user = "msa1";
+		String password = "msa1";
+
+		try {
+			conn = DriverManager.getConnection(url, user, password);
+			System.out.println("DB접속 성공");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		// 3.SQL구문 송신
+		PreparedStatement pstmt = null;
+
+		// 4.SQL문 결과 수신하기
+		ResultSet rs = null;
+
+		String selectSQL = "SELECT business_no, name, approve FROM STORE";
+
+		try {
+			pstmt = conn.prepareStatement(selectSQL);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				String name = rs.getString(2);
+				int approve = rs.getInt(3);
+				if (approve == 1) {
+					System.out.println(rs.getRow()+". "+name);
+				}
+			}
+			System.out.println("조회완료");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
 				}
 			}
 		}
@@ -211,9 +238,9 @@ public class StoreDAO implements StoreInterface {
 
 	// 상점검색
 	@Override
-	public void showByStoreName(String name) {
+	public String showByStoreName(MemberDTO member, String name) {
 		// 로그인한 사용자의 아이디 가져오기
-		String id = "sh"; // 수정필요!!
+		String id = member.getId(); // 수정필요!!
 
 		// 1. 드라이버클래스들 JVM에 로드
 		try {
@@ -221,7 +248,6 @@ public class StoreDAO implements StoreInterface {
 			System.out.println("JDBC드라이버 로드성공");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			return;
 		}
 
 		// 2.DB와 연결
@@ -243,7 +269,7 @@ public class StoreDAO implements StoreInterface {
 		// 4.SQL문 결과 수신하기
 		ResultSet rs = null;
 
-		String selectSQL = "SELECT name, approve\r\n" + "FROM STORE\r\n" + "WHERE user_id = ? AND name = ?";
+		String selectSQL = "SELECT business_no, name, approve\r\n" + "FROM STORE\r\n" + "WHERE user_id = ? AND name = ?";
 
 		try {
 			pstmt = conn.prepareStatement(selectSQL);
@@ -252,14 +278,15 @@ public class StoreDAO implements StoreInterface {
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				String sName = rs.getString(1);
-				int appr = rs.getInt(2);
+				int appr = rs.getInt(3);
 
 				if (appr == 0) {
 					System.out.println(name + "    미승인");
 				} else {
 					System.out.println(name + "    승인");
 				}
-
+				
+				return rs.getNString("business_no");
 			}
 			System.out.println("조회완료");
 		} catch (SQLException e) {
@@ -287,7 +314,7 @@ public class StoreDAO implements StoreInterface {
 				}
 			}
 		}
-
+		return null;
 	}
 
 	// 공통
@@ -311,11 +338,13 @@ public class StoreDAO implements StoreInterface {
 	@Override
 	public void updateStore(StoreDTO storeDTO) {
 		connectServer();
+		PreparedStatement preparedStatement = null;
 
 		try {
+			System.out.println("dddd");
 			connection = DriverManager.getConnection(url, user, password);
 			String updateSQL = "UPDATE STORE SET parking = ? , price = ? , open_time = ? , close_time = ? , info = ? WHERE trim(business_no) = ?";
-			PreparedStatement preparedStatement = connection.prepareStatement(updateSQL);
+			preparedStatement = connection.prepareStatement(updateSQL);
 
 			preparedStatement.setString(1, storeDTO.getParking());
 			preparedStatement.setString(2, storeDTO.getPrice());
@@ -325,10 +354,24 @@ public class StoreDAO implements StoreInterface {
 			preparedStatement.setString(6, storeDTO.getBusiness_no());
 
 			int rowCnt = preparedStatement.executeUpdate();
-			connection.close();
+			System.out.println(rowCnt);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		} finally {
+
+			try {
+				preparedStatement.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+}
 	}
 
 	// 상점 삭제
@@ -601,4 +644,8 @@ public class StoreDAO implements StoreInterface {
         }
     }
 
-}
+
+		
+	
+
+} // endclass
