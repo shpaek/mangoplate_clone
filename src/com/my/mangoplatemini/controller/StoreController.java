@@ -121,61 +121,41 @@ public class StoreController {
 
 	// 상점 정보 수정
 	public void updateStore(StoreDTO previewDTO) {
-		int correct = 0;
-
 		while(true) {
 		System.out.println("수정할 사항을 입력해주세요.");
 		System.out.println("1.오픈시간, 2.마감시간 3.가게정보 4.주차여부 5.가격대");
-		String input = scanner.nextLine();
-		switch (input) {
-		case "오픈시간":
+		Integer input = Integer.parseInt(scanner.nextLine());
+		if(input==1) {
 			System.out.println("수정할 오픈시간을 입력하세요");
 			String open_time = scanner.nextLine();
 			previewDTO.setOpen_time(open_time);
-			correct = 0;
 			break;
-
-		case "마감시간":
+		}else if(input == 2) {
 			System.out.println("수정할 마감시간을 입력하세요");
 			String close_time = scanner.nextLine();
 			previewDTO.setClose_time(close_time);
-			correct = 0;
 			break;
-
-		case "가게정보":
+		}else if(input == 3) {
 			System.out.println("수정할 가게정보을 입력하세요");
 			String info = scanner.nextLine();
 			previewDTO.setInfo(info);
-			correct = 0;
 			break;
-
-		case "주차여부":
+		}else if(input == 4) {
 			System.out.println("수정할 주차여부를 입력하세요");
 			String parking = scanner.nextLine();
 			previewDTO.setParking(parking);
-			System.out.println(parking);
-			System.out.println(previewDTO.getBusiness_no());
-			correct = 0;
 			break;
-
-		case "가격대":
+		}else if(input == 5){
 			System.out.println("수정할 가격대를 입력하세요");
 			String price = scanner.nextLine();
 			previewDTO.setPrice(price);
-			correct = 0;
 			break;
-		
-		default :
-			System.out.println("잘못된입력입니다.");
-			correct = 1;
-			
+		}else {
+			System.out.println("잘못입력 다시입력");
 		}
-		if (correct == 0) {
+		}
 		storeDAO.updateStore(previewDTO);
 		System.out.println("수정되었습니다.");
-			break;
-		}
-		}
 	}
 
 	// 상점 삭제
