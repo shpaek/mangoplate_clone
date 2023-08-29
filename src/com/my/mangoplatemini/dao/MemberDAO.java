@@ -10,6 +10,9 @@ import com.my.mangoplatemini.dto.MemberDTO;
 
 public class MemberDAO implements MemberInterface {
 	
+	
+        	        
+	        
 	@Override
 	public void login(MemberDTO member) {
 		Connection conn = null;
@@ -226,5 +229,6 @@ public class MemberDAO implements MemberInterface {
 		            e.printStackTrace();
 		        }
 		    }
-		}
+		
+	}
 }
