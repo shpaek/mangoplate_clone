@@ -86,7 +86,7 @@ public class StoreDAO implements StoreInterface {
 	}
 	
 
-	// 상점목록조회
+	// 점주상점목록조회
 	@Override
 	public void showStore(MemberDTO member) {
 		String id = member.getId();
@@ -164,6 +164,76 @@ public class StoreDAO implements StoreInterface {
 		}
 
 
+	}
+	
+	// 전체상점목록조회
+	@Override
+	public void showStoreAll(StoreDTO storeDTO) {
+		// 1. 드라이버클래스들 JVM에 로드
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			System.out.println("JDBC드라이버 로드성공");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		// 2.DB와 연결
+		Connection conn = null;
+		// ip바꿔주기
+		String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
+		String user = "msa1";
+		String password = "msa1";
+
+		try {
+			conn = DriverManager.getConnection(url, user, password);
+			System.out.println("DB접속 성공");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		// 3.SQL구문 송신
+		PreparedStatement pstmt = null;
+
+		// 4.SQL문 결과 수신하기
+		ResultSet rs = null;
+
+		String selectSQL = "SELECT name, approve\r\n FROM STORE";
+
+		try {
+			pstmt = conn.prepareStatement(selectSQL);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				String name = rs.getString(1);
+				int approve = rs.getInt(2);
+				if (approve == 1) {
+					System.out.println(rs.getRow()+". "+name);
+				}
+			}
+			System.out.println("조회완료");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
 	}
 
 	// 상점검색
@@ -574,83 +644,8 @@ public class StoreDAO implements StoreInterface {
         }
     }
 
-//
-//	@Override
-//	public void showStoreAll(StoreDTO storeDTO) {
-//		// 1. 드라이버클래스들 JVM에 로드
-//		try {
-//			Class.forName("oracle.jdbc.OracleDriver");
-//			System.out.println("JDBC드라이버 로드성공");
-//		} catch (ClassNotFoundException e) {
-//			e.printStackTrace();
-//			return;
-//		}
-//
-//		// 2.DB와 연결
-//		Connection conn = null;
-//		// ip바꿔주기
-//		String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
-//		String user = "msa1";
-//		String password = "msa1";
-//
-//		try {
-//			conn = DriverManager.getConnection(url, user, password);
-//			System.out.println("DB접속 성공");
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//
-//		// 3.SQL구문 송신
-//		PreparedStatement pstmt = null;
-//
-//		// 4.SQL문 결과 수신하기
-//		ResultSet rs = null;
-//
-//
-//		String selectSQL = "SELECT name, approve\r\n" + "FROM STORE\r\n";
-//
-//		try {
-//			pstmt = conn.prepareStatement(selectSQL);
-//			rs = pstmt.executeQuery();
-//
-//			while (rs.next()) {
-//				String name = rs.getString(1);
-//				int approve = rs.getInt(2);
-//
-//				if (approve == 1) {
-//					System.out.println(name);
-//				} else {
-//					System.out.println(name + "    승인");
-//				}
-//			}
-//			System.out.println("조회완료");
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			if (rs != null) {
-//				try {
-//					rs.close();
-//				} catch (SQLException e) {
-//				}
-//			}
-//
-//			if (pstmt != null) {
-//				try {
-//					pstmt.close();
-//				} catch (SQLException e) {
-//				}
-//			}
-//
-//			if (conn != null) {
-//				try {
-//					conn.close();
-//				} catch (SQLException e) {
-//				}
-//			}
-//		}
-//
-//
-//	}		
-//	}
+
+		
+	
 
 } // endclass
