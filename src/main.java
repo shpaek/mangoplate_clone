@@ -4,13 +4,14 @@ import com.my.mangoplatemini.controller.MemberController;
 import com.my.mangoplatemini.dto.MemberDTO;
 
 import com.my.mangoplatemini.controller.ReviewController;
+import com.my.mangoplatemini.controller.StoreController;
 
 public class main {
 	
 	public static void main(String[] args) {
 		MemberDTO mdto = new MemberDTO();
 		MemberController memberController = new MemberController();
-		
+	
 		Scanner sc = new Scanner(System.in);
 		int input = 0;
 	
@@ -29,7 +30,6 @@ public class main {
 		} else if (input == 2) {
 			memberController.createMember();
 		}
-		
 		
 	} // main
 	
