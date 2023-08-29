@@ -120,7 +120,7 @@ public class StoreDAO implements StoreInterface {
 		ResultSet rs = null;
 
 
-		String selectSQL = "SELECT name, approve\r\n" + "FROM STORE\r\n" + "WHERE user_id = ?";
+		String selectSQL = "SELECT name, approve FROM STORE WHERE user_id = ?";
 
 		try {
 			pstmt = conn.prepareStatement(selectSQL);
@@ -198,15 +198,15 @@ public class StoreDAO implements StoreInterface {
 		// 4.SQL문 결과 수신하기
 		ResultSet rs = null;
 
-		String selectSQL = "SELECT name, approve\r\n FROM STORE";
+		String selectSQL = "SELECT business_no, name, approve FROM STORE";
 
 		try {
 			pstmt = conn.prepareStatement(selectSQL);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				String name = rs.getString(1);
-				int approve = rs.getInt(2);
+				String name = rs.getString(2);
+				int approve = rs.getInt(3);
 				if (approve == 1) {
 					System.out.println(rs.getRow()+". "+name);
 				}
