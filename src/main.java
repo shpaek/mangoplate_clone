@@ -3,23 +3,11 @@ import java.util.Scanner;
 import com.my.mangoplatemini.controller.MemberController;
 import com.my.mangoplatemini.dto.MemberDTO;
 
+import com.my.mangoplatemini.controller.ReviewController;
+
 public class main {
 	
 	public static void main(String[] args) {
-		
-//		StoreController storeController = new StoreController();
-//		
-//		storeController.showStoreDetail("1");
-		
-		// 리뷰
-//		ReviewController rc = new ReviewController();
-//		
-//		String userId = "찬돌";
-//		String businessNo = "1234567890";
-//		
-//		rc.createReview(userId, businessNo);
-		
-
 		MemberDTO mdto = new MemberDTO();
 		MemberController memberController = new MemberController();
 		
@@ -42,7 +30,7 @@ public class main {
 			memberController.createMember();
 		}
 		
-		// ========================================
+		
 	} // main
 	
 } // end class
