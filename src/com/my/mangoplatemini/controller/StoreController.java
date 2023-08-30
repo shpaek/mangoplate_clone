@@ -42,6 +42,7 @@ public class StoreController {
                 }
             }
         } else if (member.getUser_type() == 2) {
+
             while (true) {
                 System.out.println("1. 상점 등록    2. 내 상점 목록    3. 상점 상세정보    4. 초기 화면");
                 String input = scanner.nextLine();
@@ -131,6 +132,7 @@ public class StoreController {
     // 상점목록조회
     public void showStore(MemberDTO member) {
         storeDAO.showStore(member);
+
         while (true) {
             System.out.println("이전 화면으로 가시려면 Y를 입력해주세요");
             String input = scanner.nextLine();
@@ -157,7 +159,7 @@ public class StoreController {
             }
         }
     }
-
+  
 
     // 홍식
     // 상점 상세정보
