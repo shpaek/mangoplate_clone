@@ -9,34 +9,49 @@ public class MemberController {
 	Scanner scanner = new Scanner(System.in);      
 	MemberDAO memberdao = new MemberDAO();
 
+	//로그인
 	public void login() {
-		System.out.println("아이디를 입력해주세요.");
-		String loginId = scanner.nextLine();
-		System.out.println("비밀번호를 입력해주세요.");
-		String loginPassword = scanner.nextLine();
+		while (true) {
+			System.out.println("아이디를 입력해주세요.");
+			String loginId = scanner.nextLine();
 
-		MemberDTO member = new MemberDTO();
-		member.setId(loginId);
-		member.setPassword(loginPassword);
-		int user_type = memberdao.login(member);
-		member.setUser_type(user_type);
-		
-		storeController.endlogin(member);
+			System.out.println("비밀번호를 입력해주세요.");
+			String loginPassword = scanner.nextLine();
 
+			if (loginId.isEmpty() || loginPassword.isEmpty()) {
+				System.out.println("※잘못된 입력입니다. 다시 입력해 주세요.※\n");
+			} else {
+				MemberDTO member = new MemberDTO();
+				member.setId(loginId);
+				member.setPassword(loginPassword);
+				int user_type = memberdao.login(member);
+				member.setUser_type(user_type);
+				storeController.endlogin(member);
+				break;
+			}
+		}
 	} // login
 
+	//회원가입
 	public void createMember() {
 
-		System.out.println("1. 사용자 가입\n");
-		System.out.println("2. 점주 가입");
-
 		int user_typeInput = 0;
-		try {
-			user_typeInput = Integer.parseInt(scanner.nextLine());
-		} catch (NumberFormatException e) {
-			System.out.println("※올바른 숫자를 입력해주세요.※");
-		} //try-catch
 
+		while (true) {
+			System.out.println("1. 사용자 가입\n");
+			System.out.println("2. 점주 가입");
+
+			try {
+				user_typeInput = Integer.parseInt(scanner.nextLine());
+				if (user_typeInput == 1 || user_typeInput == 2) {
+					break;
+				} else {
+					System.out.println("※올바른 숫자를 입력해주세요.※\n");
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("※잘못된 입력입니다. 다시 입력해 주세요.※\n");
+			}
+		}
 		System.out.println("아이디를 입력해주세요.");
 		String newId = scanner.nextLine();
 		System.out.println("비밀번호를 입력해주세요.");
