@@ -18,9 +18,12 @@ public class StoreDAO implements StoreInterface {
     // 공통
     // 서버정보
     Connection conn = null;
-    String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
-    String user = "msa1";
-    String password = "msa1";
+    //    String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
+//    String user = "msa1";
+//    String password = "msa1";
+    String url = "jdbc:oracle:thin:@localhost:1521:xe";
+    String user = "mango";
+    String password = "mango";
 
     public void connectServer() {
         try {
@@ -229,7 +232,6 @@ public class StoreDAO implements StoreInterface {
         return null;
     }
 
-	
     // 홍식
     // 상점 수정
     @Override
@@ -258,13 +260,11 @@ public class StoreDAO implements StoreInterface {
             try {
                 preparedStatement.close();
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             try {
                 conn.close();
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -399,7 +399,6 @@ public class StoreDAO implements StoreInterface {
         return storeDTO;
     }
 
-	
     // 학윤
     // 메뉴 등록
     @Override
@@ -506,6 +505,7 @@ public class StoreDAO implements StoreInterface {
             }
         }
     }
+
 
     // 메뉴 삭제
     @Override
