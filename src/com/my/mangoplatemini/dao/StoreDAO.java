@@ -10,21 +10,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.my.mangoplatemini.controller.DBConnectController;
 import com.my.mangoplatemini.dto.MemberDTO;
 import com.my.mangoplatemini.dto.MenuDTO;
 import com.my.mangoplatemini.dto.ReviewDTO;
 import com.my.mangoplatemini.dto.StoreDTO;
 
 public class StoreDAO implements StoreInterface {
-		
+	// 공통
+	// 서버정보
+	Connection connection = null;
+	String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
+	String user = "msa1";
+	String password = "msa1";
+
+	public void connectServer() {
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+//	DBConnectController dbConnectController = new DBConnectController();
+
 	// 서현
 	// 상점등록
 	@Override
 	public void createStore(MemberDTO member, StoreDTO store) {
-		// 로그인한 사용자의 아이디 가져오기
-		String id = member.getId(); // 수정필요!!
+		String id = member.getId();
 
-		// 1. 드라이버클래스들 JVM에 로드
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			System.out.println("JDBC드라이버 로드성공");
@@ -33,9 +48,8 @@ public class StoreDAO implements StoreInterface {
 			return;
 		}
 
-		// 2.DB와 연결
 		Connection conn = null;
-		// ip바꿔주기
+
 		String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
 		String user = "msa1";
 		String password = "msa1";
@@ -79,7 +93,6 @@ public class StoreDAO implements StoreInterface {
 				} catch (SQLException e) {
 				}
 			}
-
 			if (conn != null) {
 				try {
 					conn.close();
@@ -87,9 +100,7 @@ public class StoreDAO implements StoreInterface {
 				}
 			}
 		}
-
 	}
-	
 
 	// 점주상점목록조회
 	@Override
@@ -123,7 +134,6 @@ public class StoreDAO implements StoreInterface {
 
 		// 4.SQL문 결과 수신하기
 		ResultSet rs = null;
-
 
 		String selectSQL = "SELECT name, approve FROM STORE WHERE user_id = ?";
 
@@ -171,9 +181,8 @@ public class StoreDAO implements StoreInterface {
 			}
 		}
 
-
 	}
-	
+
 	// 전체상점목록조회
 	@Override
 	public Map showStoreAll() {
@@ -216,7 +225,7 @@ public class StoreDAO implements StoreInterface {
 				String name = rs.getString(2);
 				int approve = rs.getInt(3);
 				if (approve == 1) {
-					System.out.println(rs.getRow()+". "+name);
+					System.out.println(rs.getRow() + ". " + name);
 					map.put(rs.getRow(), business_no);
 				}
 			}
@@ -280,7 +289,8 @@ public class StoreDAO implements StoreInterface {
 		// 4.SQL문 결과 수신하기
 		ResultSet rs = null;
 
-		String selectSQL = "SELECT business_no, name, approve\r\n" + "FROM STORE\r\n" + "WHERE user_id = ? AND name = ?";
+		String selectSQL = "SELECT business_no, name, approve\r\n" + "FROM STORE\r\n"
+				+ "WHERE user_id = ? AND name = ?";
 
 		try {
 			pstmt = conn.prepareStatement(selectSQL);
@@ -296,7 +306,7 @@ public class StoreDAO implements StoreInterface {
 				} else if (appr == 1) {
 					System.out.println(name + "    승인");
 				}
-				
+
 				return rs.getNString("business_no");
 			}
 			System.out.println("조회완료");
@@ -328,27 +338,12 @@ public class StoreDAO implements StoreInterface {
 		return null;
 	}
 
-	// 공통
-	// 서버정보
-	Connection connection = null;
-	String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
-	String user = "msa1";
-	String password = "msa1";
-
-	// 서버 연결
-	public void connectServer() {
-		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		}
-	}
-
 	// 홍식
 	// 상점 수정
 	@Override
 	public void updateStore(StoreDTO storeDTO) {
 		connectServer();
+
 		PreparedStatement preparedStatement = null;
 
 		try {
@@ -381,7 +376,7 @@ public class StoreDAO implements StoreInterface {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-}
+		}
 	}
 
 	// 상점 삭제
@@ -409,6 +404,7 @@ public class StoreDAO implements StoreInterface {
 	public StoreDTO showStoreDetail(String business_no) {
 
 		connectServer();
+
 		ResultSet resultSet = null;
 		PreparedStatement preparedStatement = null;
 		try {
@@ -417,7 +413,7 @@ public class StoreDAO implements StoreInterface {
 			String selectSQL = "select name, address, price, category, tel, parking,"
 					+ " open_time, close_time, info, rating ,review_cnt, approve from store where trim(business_no) = ?";
 
-		preparedStatement = connection.prepareStatement(selectSQL);
+			preparedStatement = connection.prepareStatement(selectSQL);
 
 			preparedStatement.setString(1, business_no);
 			resultSet = preparedStatement.executeQuery();
@@ -437,7 +433,7 @@ public class StoreDAO implements StoreInterface {
 			return storeDTO;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				preparedStatement.close();
 				connection.close();
@@ -453,6 +449,7 @@ public class StoreDAO implements StoreInterface {
 	// 상점 리뷰
 	public List<String> showStoreReview(String business_no) {
 		connectServer();
+
 		ResultSet resultSet = null;
 		PreparedStatement preparedStatement = null;
 
@@ -475,7 +472,7 @@ public class StoreDAO implements StoreInterface {
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				preparedStatement.close();
 				connection.close();
@@ -489,8 +486,10 @@ public class StoreDAO implements StoreInterface {
 	// 선택한 상점의 상세 정보
 	@Override
 	public StoreDTO showStoreOne(String business_no) {
-		StoreDTO storeDTO = new StoreDTO();
 		connectServer();
+
+		StoreDTO storeDTO = new StoreDTO();
+
 		ResultSet resultSet = null;
 		PreparedStatement preparedStatement = null;
 
@@ -516,7 +515,7 @@ public class StoreDAO implements StoreInterface {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				preparedStatement.close();
 				connection.close();
@@ -536,30 +535,32 @@ public class StoreDAO implements StoreInterface {
 
 		try {
 			connection = DriverManager.getConnection(url, user, password);
+		} catch (SQLException e) {
+		}
 
-			String insertQuery = "INSERT \r\n" + "  INTO MENU (no, business_no, name, price) \r\n"
-					+ "VALUES (menu_seq.nextval, ?, ?, ?)";
+		PreparedStatement preparedStatement = null;
 
-			PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+		String insertSQL = "INSERT \r\n" + "  INTO MENU (no, business_no, name, price) \r\n"
+				+ "VALUES (menu_seq.nextval, ?, ?, ?)";
+		try {
+			preparedStatement = connection.prepareStatement(insertSQL);
 			preparedStatement.setString(1, menuDTO.getBusiness_no());
 			preparedStatement.setString(2, menuDTO.getName());
 			preparedStatement.setString(3, menuDTO.getPrice());
-			int createCnt = preparedStatement.executeUpdate();
-			if (createCnt == 0) {
-				System.out.println(" ");
-				System.out.println("※메뉴 등록에 실패하였습니다.※");
-			} else {
-				System.out.println(" ");
-				System.out.println("#메뉴 등록 완료#");
-			}
-			preparedStatement.close();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 		} finally {
-			try {
-				if (connection != null) {
-					connection.close();
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
 				}
-			} catch (SQLException e) {
+			}
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+				}
 			}
 		}
 	}
@@ -586,11 +587,10 @@ public class StoreDAO implements StoreInterface {
 			while (resultSet.next()) {
 				int eNo = resultSet.getInt("no");
 				String eName = resultSet.getString(2);
-				int ePrice = resultSet.getInt("price");
+				String ePrice = resultSet.getString("price");
 
 				System.out.println(" ");
 				System.out.println("번호 : " + eNo + "    이름 : " + eName + "    가격 : " + ePrice);
-
 			}
 		} catch (SQLException e) {
 		} finally {
@@ -620,69 +620,70 @@ public class StoreDAO implements StoreInterface {
 	public void updateMenu(MenuDTO menuDTO) {
 		connectServer();
 
+		PreparedStatement preparedStatement = null;
+
 		try {
 			connection = DriverManager.getConnection(url, user, password);
+		} catch (SQLException e) {
+		}
 
-			String updateMenu = " UPDATE MENU \r\n" + "    SET name = ?, price = ? \r\n" + "  WHERE no = ?";
-			PreparedStatement preparedStatement = connection.prepareStatement(updateMenu);
+		try {
+			String updateSQL = " UPDATE MENU \r\n" + "    SET name = ?, price = ? \r\n" + "  WHERE no = ?";
+			preparedStatement = connection.prepareStatement(updateSQL);
 			preparedStatement.setString(1, menuDTO.getName());
 			preparedStatement.setString(2, menuDTO.getPrice());
 			preparedStatement.setInt(3, menuDTO.getNo());
-			int updateCnt = preparedStatement.executeUpdate();
-			if (updateCnt == 0) {
-				System.out.println(" ");
-				System.out.println("※존재하지 않는 메뉴입니다.※");
-			} else {
-				System.out.println(" ");
-				System.out.println("#메뉴 수정 완료#");
-			}
-			preparedStatement.close();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 		} finally {
-			try {
-				if (connection != null) {
-					connection.close();
+
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
 				}
-			} catch (SQLException e) {
+			}
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+				}
 			}
 		}
 	}
 
 	// 메뉴 삭제
 	@Override
-    public void deleteMenu(MenuDTO menuDTO) {
-        connectServer();
+	public void deleteMenu(MenuDTO menuDTO) {
+		connectServer();
 
-        try {
-            connection = DriverManager.getConnection(url, user, password);
+		PreparedStatement preparedStatement = null;
 
-            String updateQuery = "DELETE \r\n"
-                    + "  FROM MENU\r\n"
-                    + " WHERE no = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
-            preparedStatement.setInt(1, menuDTO.getNo());
-            int deleteCnt = preparedStatement.executeUpdate();
-            if (deleteCnt == 0) {
-                System.out.println(" ");
-                System.out.println("※존재하지 않는 메뉴입니다.※");
-            } else {
-                System.out.println(" ");
-                System.out.println("#메뉴 삭제 완료#");
-            }
-            preparedStatement.close();
-        } catch (SQLException e) {
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-            }
-        }
-    }
+		try {
+			connection = DriverManager.getConnection(url, user, password);
+		} catch (SQLException e) {
+		}
 
+		try {
+			String deleteSQL = "DELETE \r\n" + "  FROM MENU\r\n" + " WHERE no = ?";
+			preparedStatement = connection.prepareStatement(deleteSQL);
+			preparedStatement.setInt(1, menuDTO.getNo());
+		} catch (SQLException e) {
+		} finally {
 
-		
-	
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+	}
 
 } // endclass
