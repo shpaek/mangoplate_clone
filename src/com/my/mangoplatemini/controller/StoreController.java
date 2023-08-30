@@ -34,11 +34,12 @@ public class StoreController {
 				ReviewDAO review = new ReviewDAO();
 				
 				Map map = storeDAO.showStoreAll();
-				
+
 				reviewController.createReview(member,map);
+
 			} else {
-				System.out.println("ㄴㄴ");
-			}
+				System.out.println("잘못된 입력입니다.");
+			} // if-else 
 
 		} else if (member.getUser_type() == 2 ) {
 
