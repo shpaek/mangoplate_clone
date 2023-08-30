@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
-import com.my.mangoplatemini.dao.ReviewDAO;
 import com.my.mangoplatemini.dao.StoreDAO;
 import com.my.mangoplatemini.dao.StoreInterface;
 import com.my.mangoplatemini.dto.MemberDTO;
@@ -14,52 +13,57 @@ import com.my.mangoplatemini.dto.StoreDTO;
 
 public class StoreController {
     private static StoreController sc = new StoreController();
+    private ReviewController reviewController = new ReviewController();
+    private StoreInterface storeDAO = new StoreDAO();
+    Scanner scanner = new Scanner(System.in);
 
+    //메인 호출
     public static StoreController getInit() {
         return sc;
     }
 
-    private StoreInterface storeDAO = new StoreDAO();
-    private ReviewController reviewController = new ReviewController();
-    Scanner scanner = new Scanner(System.in);
-
+    //로그인 후 메소드
     public void endlogin(MemberDTO member) {
-
         HomeController homeController = new HomeController();
 
         if (member.getUser_type() == 1) {
-
-            System.out.println("1. 리뷰 등록    2. 초기 화면");
-            int input = Integer.parseInt(scanner.nextLine());
-            if (input == 1) {
-
-                StoreDTO storeDTO = new StoreDTO();
-                ReviewDAO review = new ReviewDAO();
-
-                Map map = storeDAO.showStoreAll();
-
-                reviewController.createReview(member, map);
-
-            } else if (input == 2) {
-                homeController.init();
-            } else {
-                System.out.println("※잘못된 입력입니다.다시 입력해 주세요.※");
-            } // if-else
-
+            while (true) {
+                System.out.println("1. 리뷰 등록    2. 초기 화면");
+                String input = scanner.nextLine();
+                if (input.equals("1")) {
+                    Map map = storeDAO.showStoreAll();
+                    reviewController.createReview(member, map);
+                    break;
+                } else if (input.equals("2")) {
+                    homeController.init();
+                    break;
+                } else {
+                    System.out.println("※잘못된 입력입니다. 다시 입력해 주세요.※\n");
+                }
+            }
         } else if (member.getUser_type() == 2) {
 
-            System.out.println("1. 상점 등록    2. 내 상점 목록    3. 상점 상세정보");
-            int input = Integer.parseInt(scanner.nextLine());
-            if (input == 1) {
-                createStore(member);
-            } else if (input == 2) {
-                showStore(member);
-            } else if (input == 3) {
-                this.showByStoreName(member);
+            while (true) {
+                System.out.println("1. 상점 등록    2. 내 상점 목록    3. 상점 상세정보    4. 초기 화면");
+                String input = scanner.nextLine();
+
+                if (input.equals("1")) {
+                    createStore(member);
+                    break;
+                } else if (input.equals("2")) {
+                    showStore(member);
+                    break;
+                } else if (input.equals("3")) {
+                    this.showByStoreName(member);
+                    break;
+                } else if (input.equals("4")) {
+                    homeController.init();
+                    break;
+                } else {
+                    System.out.println("※잘못된 입력입니다. 다시 입력해 주세요.※\n");
+                }
             }
-
-        } //if-else
-
+        }
     } // endlogin
 
     // 서현
@@ -128,32 +132,34 @@ public class StoreController {
     // 상점목록조회
     public void showStore(MemberDTO member) {
         storeDAO.showStore(member);
-        while(true) {
-        System.out.println("이전 화면으로 가시려면 Y를 입력해주세요");
-        String input = scanner.nextLine();
-        if (input.equals("y") || input.equals("Y")) {
-            endlogin(member);
-            break;
-        } else {
-            System.out.println("※잘못된 입력입니다.다시 입력해 주세요.※");
-        }
+
+        while (true) {
+            System.out.println("이전 화면으로 가시려면 Y를 입력해주세요");
+            String input = scanner.nextLine();
+            if (input.equals("y") || input.equals("Y")) {
+                endlogin(member);
+                break;
+            } else {
+                System.out.println("※잘못된 입력입니다.다시 입력해 주세요.※");
+            }
         }
     }
 
     // 상점검색
     public void showByStoreName(MemberDTO member) {
-    	while(true) {
-    		System.out.println("상세보기할 매장 이름을 검색하세요.");
-    		StoreDAO store = new StoreDAO();
-    		String sName = scanner.nextLine();
-    		String business_no = store.showByStoreName(member, sName);
-    		
-    		if(business_no != null) {
-    			this.showStoreDetail(business_no);
-    			break;
-    		}
-    		}
-    	}
+        while (true) {
+            System.out.println("상세보기할 매장 이름을 검색하세요.");
+            StoreDAO store = new StoreDAO();
+            String sName = scanner.nextLine();
+            String business_no = store.showByStoreName(member, sName);
+
+            if (business_no != null) {
+                this.showStoreDetail(business_no);
+                break;
+            }
+        }
+    }
+  
 
     // 홍식
     // 상점 상세정보
@@ -173,10 +179,10 @@ public class StoreController {
         System.out.println("\n카테고리 : " + s.getCategory());
         System.out.println("\n상점설명 : " + s.getInfo());
         System.out.println("\n주차여부 : " + s.getParking() + "\n");
-        if(s.getApprove() == -1) {
-        	System.out.println("상점 운영 여부 : X");
-        }else {
-        	System.out.println("상점 운영 여부 : O");
+        if (s.getApprove() == -1) {
+            System.out.println("상점 운영 여부 : X\n");
+        } else {
+            System.out.println("상점 운영 여부 : O\n");
         }
 
         showReview(business_no);
@@ -204,6 +210,7 @@ public class StoreController {
         }
     }
 
+    //리뷰
     public void showReview(String business_no) {
         List<String> result = storeDAO.showStoreReview(business_no);
         System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡ리뷰 목록ㅡㅡㅡㅡㅡㅡㅡㅡㅡ\n");
@@ -258,6 +265,7 @@ public class StoreController {
         System.out.println("수정이 완료되었습니다.\n");
         showStoreDetail(previewDTO.getBusiness_no());
     }
+
 
     // 학윤
     // 메뉴 등록
@@ -362,7 +370,6 @@ public class StoreController {
         showMenu(business_no);
     }
 
-
     // 메뉴 삭제
     public void deleteMenu(String business_no) {
         MenuDTO menuDTO = new MenuDTO();
@@ -384,4 +391,3 @@ public class StoreController {
     }
 
 }
-
