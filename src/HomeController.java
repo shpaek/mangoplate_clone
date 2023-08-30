@@ -2,7 +2,7 @@
 
 import java.util.Scanner;
 
-import com.my.mangoplatemini.controller.Member$MemberController.MemberController;
+import com.my.mangoplatemini.controller.MemberController;
 
 public class HomeController {
 	MemberController memberController = new MemberController();

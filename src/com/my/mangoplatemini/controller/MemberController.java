@@ -1,7 +1,6 @@
-package com.my.mangoplatemini.controller.Member$MemberController;
+package com.my.mangoplatemini.controller;
 import java.util.Scanner;
 
-import com.my.mangoplatemini.controller.StoreController;
 import com.my.mangoplatemini.dao.MemberDAO;
 import com.my.mangoplatemini.dto.MemberDTO;
 
