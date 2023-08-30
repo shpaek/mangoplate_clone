@@ -11,19 +11,28 @@ public class MemberController {
 
 	MemberDTO member = new MemberDTO();
 
-	public void login() {
+	   public void login() {
 
-		System.out.println("아이디를 입력하세요:");
-		String loginId = scanner.nextLine();
-		System.out.println("비밀번호를 입력하세요:");
-		String loginPassword = scanner.nextLine();
+		      System.out.println("아이디를 입력하세요:");
+		      String loginId = scanner.nextLine();
+		      System.out.println("비밀번호를 입력하세요:");
+		      String loginPassword = scanner.nextLine();
 
-		MemberDTO member = new MemberDTO();
-		member.setId(loginId);
-		member.setPassword(loginPassword);
+		      MemberDTO member = new MemberDTO();
+		      member.setId(loginId);
+		      member.setPassword(loginPassword);
+		      try {
+		         memberdao.login(member);
+		      } catch (Exception e) {
+		         System.out.println(e.getMessage());
+		         return;
+		      }
+		      StoreController storeController = new StoreController();
+		      storeController.endlogin(member);
 
-	} // login
+	   }
 
+	   
 	public void createMember() {
 
 		System.out.println("1. 사용자로 가입");
@@ -63,5 +72,46 @@ public class MemberController {
 		login();
 	
 	} // createMember
+	public void updateMember(MemberDTO memberDTO) {
+	    while (true) {
+	        System.out.println("수정할 사항을 입력해주세요.");
+	        System.out.println("1.비밀번호, 2.이메일, 3.이름, 4.전화번호");
+	        Integer input = Integer.parseInt(scanner.nextLine());
 
-} // end class
+	        if (input == 1) {
+	            System.out.println("수정할 비밀번호를 입력하세요");
+	            String password = scanner.nextLine();
+	            memberDTO.setPassword(password);
+	            break;
+	        } else if (input == 2) {
+	            System.out.println("수정할 이메일을 입력하세요");
+	            String email = scanner.nextLine();
+	            memberDTO.setEmail(email);
+	            break;
+	        } else if (input == 3) {
+	            System.out.println("수정할 이름을 입력하세요");
+	            String name = scanner.nextLine();
+	            memberDTO.setName(name);
+	            break;
+	        } else if (input == 4) {
+	            System.out.println("수정할 전화번호를 입력하세요");
+	            String tel = scanner.nextLine();
+	            memberDTO.setTel(tel);
+	            break;
+	        } else {
+	            System.out.println("잘못입력하셨습니다. 다시입력해주세요");
+	        }
+	    }
+	    MemberDAO memberDAO = new MemberDAO();
+	    memberDAO.updateMember(memberDTO);
+	    System.out.println("수정되었습니다.");
+	} // updateMember
+	
+	public void deleteMember() {
+		
+	}
+
+	} // end class
+
+	
+
