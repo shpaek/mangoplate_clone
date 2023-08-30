@@ -400,14 +400,14 @@ public class StoreDAO implements StoreInterface {
 
 		connectServer();
 		ResultSet resultSet = null;
-
+		PreparedStatement preparedStatement = null;
 		try {
 			connection = DriverManager.getConnection(url, user, password);
 
 			String selectSQL = "select name, address, price, category, tel, parking,"
 					+ " open_time, close_time, info, rating ,review_cnt from store where trim(business_no) = ?";
 
-			PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+		preparedStatement = connection.prepareStatement(selectSQL);
 
 			preparedStatement.setString(1, business_no);
 			resultSet = preparedStatement.executeQuery();
@@ -418,6 +418,8 @@ public class StoreDAO implements StoreInterface {
 				System.out.println("가게명 : " + resultSet.getString("name"));
 				System.out.println("주소 : " + resultSet.getString("address"));
 				System.out.println("가격대 : " + resultSet.getString("price"));
+				System.out.println("오픈시간 : " + resultSet.getString("open_time"));
+				System.out.println("종료시간 : " + resultSet.getString("close_time"));
 				System.out.println("카테고리 : " + resultSet.getString("category"));
 				System.out.println("전화번호 : " + resultSet.getString("tel"));
 				System.out.println("주차여부 : " + resultSet.getString("parking"));
@@ -426,6 +428,13 @@ public class StoreDAO implements StoreInterface {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				preparedStatement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		showStoreReview(business_no);
@@ -436,13 +445,14 @@ public class StoreDAO implements StoreInterface {
 	public void showStoreReview(String business_no) {
 		connectServer();
 		ResultSet resultSet = null;
+		PreparedStatement preparedStatement = null;
 
 		try {
 			connection = DriverManager.getConnection(url, user, password);
 
 			String selectSQL = "select content \n" + "from review \n" + "where trim(business_no) = ?";
 
-			PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+			preparedStatement = connection.prepareStatement(selectSQL);
 
 			preparedStatement.setString(1, business_no);
 			resultSet = preparedStatement.executeQuery();
@@ -453,6 +463,13 @@ public class StoreDAO implements StoreInterface {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				preparedStatement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -462,6 +479,7 @@ public class StoreDAO implements StoreInterface {
 		StoreDTO storeDTO = new StoreDTO();
 		connectServer();
 		ResultSet resultSet = null;
+		PreparedStatement preparedStatement = null;
 
 		try {
 			connection = DriverManager.getConnection(url, user, password);
@@ -469,7 +487,7 @@ public class StoreDAO implements StoreInterface {
 			String selectSQL = "select price, category, parking,"
 					+ " open_time, close_time, info from store where trim(business_no) = ?";
 
-			PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+			preparedStatement = connection.prepareStatement(selectSQL);
 
 			preparedStatement.setString(1, business_no);
 			resultSet = preparedStatement.executeQuery();
@@ -485,6 +503,13 @@ public class StoreDAO implements StoreInterface {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				preparedStatement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return storeDTO;
 

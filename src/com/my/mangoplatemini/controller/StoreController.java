@@ -115,10 +115,14 @@ public class StoreController {
 	// 상점 상세정보
 	public void showStoreDetail(String business_no) {
 		storeDAO.showStoreDetail(business_no);
+		
 		StoreDTO priviewDTO = new StoreDTO();
+		
 		while(true) {
+			
 		System.out.println("1.메뉴보기 2.상점수정하기 3.상점 삭제하기");
 		String input = scanner.nextLine();
+		
 		if (input.equals("1")) {
 			showMenu(business_no);
 			break;
@@ -136,17 +140,20 @@ public class StoreController {
 	}
 	
 
-	private void deleteStore(String business_no) {
+	//상점 정보 삭제
+	public void deleteStore(String business_no) {
 		storeDAO.deleteStore(business_no);
 		System.out.println("선택한 상점이 삭제되었습니다.");
 	}
 	// 상점 정보 수정
 	public void updateStore(StoreDTO previewDTO) {
 		while(true) {
+			
 		System.out.println("수정할 사항을 입력해주세요.");
 		System.out.println("1.오픈시간, 2.마감시간 3.가게정보 4.주차여부 5.가격대");
 		Integer input = Integer.parseInt(scanner.nextLine());
-		if(input==1) {
+		
+		if(input == 1) {
 			System.out.println("수정할 오픈시간을 입력하세요");
 			String open_time = scanner.nextLine();
 			previewDTO.setOpen_time(open_time);
