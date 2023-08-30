@@ -1,5 +1,7 @@
 package com.my.mangoplatemini.dao;
 
+import java.util.Map;
+
 import com.my.mangoplatemini.dto.MemberDTO;
 import com.my.mangoplatemini.dto.MenuDTO;
 import com.my.mangoplatemini.dto.StoreDTO;
@@ -21,8 +23,9 @@ public interface StoreInterface {
 	public void showStore(MemberDTO member);
 	/**
 	 * 승인된 전체상점목록을 볼 수 있다.
+	 * @return 
 	 */
-	public void showStoreAll(StoreDTO storeDTO);
+	public Map showStoreAll();
 	
 	/**
 	 * 상점이름으로 검색할 수 있다.

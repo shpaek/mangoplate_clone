@@ -11,7 +11,7 @@ import com.my.mangoplatemini.dto.MemberDTO;
 public class MemberDAO implements MemberInterface {
 	
 	@Override
-	public void login(MemberDTO member) {
+	public Integer login(MemberDTO member) {
 		
 		
 		Connection conn = null;
@@ -27,7 +27,7 @@ public class MemberDAO implements MemberInterface {
 
 		// 4. SQL구문 송신
 		PreparedStatement pstmt = null;
-		String selectSQL = "select id , password from member where id = ? and password = ?";
+		String selectSQL = "select id , password, user_type from member where id = ? and password = ?";
 		try {
 			pstmt = conn.prepareStatement(selectSQL);
 			pstmt.setString(1,member.getId());
@@ -40,7 +40,9 @@ public class MemberDAO implements MemberInterface {
 				else {
 					System.out.println("잘못입력");
 				}
+				return s.getInt(3);
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -56,7 +58,10 @@ public class MemberDAO implements MemberInterface {
 				} catch (SQLException e) {
 				}
 			}
+			
 		}
+		return 0;
+		
 		
 	}
 		// 3. DB와 연결

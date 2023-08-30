@@ -8,13 +8,14 @@ import java.sql.SQLException;
 import com.my.mangoplatemini.dto.ReviewDTO;
 
 public class ReviewDAO implements ReviewInterface {
+	
 	// 공통
 	// DB정보
 	Connection conn = null;
-//	String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
-	String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	String user = "mango";
-	String password = "mango";
+	String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
+//	String url = "jdbc:oracle:thin:@localhost:1521:xe";
+	String user = "msa1";
+	String password = "msa1";
 
 	// 서버 연결
 	public void connectServer() {
@@ -22,8 +23,8 @@ public class ReviewDAO implements ReviewInterface {
 			Class.forName("oracle.jdbc.OracleDriver");
 		} catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
-		}
-	}
+		} // try-catch
+	} // connectServer
 
 	@Override
 	public void createReview(ReviewDTO reivewDTO) {
@@ -34,23 +35,16 @@ public class ReviewDAO implements ReviewInterface {
 		try {
 			
 			conn = DriverManager.getConnection(url, user, password);
-			System.out.println("DB에 연결이 되었습니다 :-)");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} // trt-catch
+		} // try-catch
 
 		// SQL문 송신 객체 생성
 		PreparedStatement pstmt = null;
 		String insertSQL = "INSERT INTO review(no, business_no, user_id, content, review_date, rating)"
-				+ "VALUES(emp_seq.NEXTVAL, ?, ?, ?, SYSDATE, ?)"; // review_seq.NEXTVAL
-		// business_no랑 user_id는 가져오는 값.. 수정 필요..
+				+ "VALUES(review_seq.NEXTVAL, ?, ?, ?, SYSDATE, ?)";
 		
-//		PreparedStatement cpstmt = null;
-//		String countSQL = "UPDATE store"
-//				+ "SET review_cnt = review_cnt + 1"
-//				+ "WEHRE business_no = ?";
-
 		// SQL문 송신
 		try {
 
@@ -63,10 +57,6 @@ public class ReviewDAO implements ReviewInterface {
 			pstmt.executeLargeUpdate(); // 반환된 업데이트 횟수 실행
 
 			System.out.println("리뷰가 등록되었습니다.");
-			
-//			cpstmt = conn.prepareStatement(countSQL);
-//			cpstmt.setString(1, reivewDTO.getBusiness_no());
-//			cpstmt.executeLargeUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
