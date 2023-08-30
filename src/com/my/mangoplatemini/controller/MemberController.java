@@ -5,7 +5,8 @@ import com.my.mangoplatemini.dao.MemberDAO;
 import com.my.mangoplatemini.dto.MemberDTO;
 
 public class MemberController {
-
+	StoreController storeController = StoreController.getInit();
+	
 	Scanner scanner = new Scanner(System.in);      
 	MemberDAO memberdao = new MemberDAO();
 
@@ -23,7 +24,7 @@ public class MemberController {
 		member.setPassword(loginPassword);
 		int user_type = memberdao.login(member);
 		member.setUser_type(user_type);
-		StoreController storeController = new StoreController();
+		
 		storeController.endlogin(member);
 
 	} // login

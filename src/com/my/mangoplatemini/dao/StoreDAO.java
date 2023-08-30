@@ -5,12 +5,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.my.mangoplatemini.controller.DBConnectController;
 import com.my.mangoplatemini.dto.MemberDTO;
 import com.my.mangoplatemini.dto.MenuDTO;
+import com.my.mangoplatemini.dto.ReviewDTO;
 import com.my.mangoplatemini.dto.StoreDTO;
 
 public class StoreDAO implements StoreInterface {
@@ -396,7 +399,7 @@ public class StoreDAO implements StoreInterface {
 
 	// 상점 상세정보
 	@Override
-	public void showStoreDetail(String business_no) {
+	public StoreDTO showStoreDetail(String business_no) {
 
 		connectServer();
 
@@ -412,22 +415,20 @@ public class StoreDAO implements StoreInterface {
 
 			preparedStatement.setString(1, business_no);
 			resultSet = preparedStatement.executeQuery();
-
+			StoreDTO storeDTO = new StoreDTO();
 			while (resultSet.next()) {
-				System.out.println("=====가게 상세 정보=====");
-				System.out.println("평점 : " + resultSet.getInt("rating") + " 리뷰 수 :" + resultSet.getInt("review_cnt"));
-				System.out.println("가게명 : " + resultSet.getString("name"));
-				System.out.println("주소 : " + resultSet.getString("address"));
-				System.out.println("가격대 : " + resultSet.getString("price"));
-				System.out.println("오픈시간 : " + resultSet.getString("open_time"));
-				System.out.println("종료시간 : " + resultSet.getString("close_time"));
-				System.out.println("카테고리 : " + resultSet.getString("category"));
-				System.out.println("전화번호 : " + resultSet.getString("tel"));
-				System.out.println("주차여부 : " + resultSet.getString("parking"));
-				System.out.println("상점상태 : " + resultSet.getString("approve"));
+				storeDTO.setRating(resultSet.getInt("rating"));
+				storeDTO.setName(resultSet.getString("name"));
+				storeDTO.setAddress(resultSet.getString("address"));
+				storeDTO.setPrice(resultSet.getString("price"));
+				storeDTO.setOpen_time(resultSet.getString("open_time"));
+				storeDTO.setClose_time(resultSet.getString("close_time"));
+				storeDTO.setCategory(resultSet.getString("category"));
+				storeDTO.setTel(resultSet.getString("tel"));
+				storeDTO.setParking(resultSet.getString("parking"));
+				storeDTO.setApprove(resultSet.getInt("approve"));
 			}
-			System.out.println();
-
+			return storeDTO;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -439,12 +440,12 @@ public class StoreDAO implements StoreInterface {
 			}
 		}
 
-		showStoreReview(business_no);
+		return null;
 
 	}
 
 	// 상점 리뷰
-	public void showStoreReview(String business_no) {
+	public List<String> showStoreReview(String business_no) {
 		connectServer();
 
 		ResultSet resultSet = null;
@@ -459,11 +460,14 @@ public class StoreDAO implements StoreInterface {
 
 			preparedStatement.setString(1, business_no);
 			resultSet = preparedStatement.executeQuery();
-
-			System.out.println("=====리뷰======");
+			ArrayList<String> list = new ArrayList<String>();
+			
 			while (resultSet.next()) {
-				System.out.println("리뷰내용 : " + resultSet.getString("content"));
+				
+				list.add(resultSet.getString("content"));
 			}
+			
+			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -474,6 +478,7 @@ public class StoreDAO implements StoreInterface {
 				e.printStackTrace();
 			}
 		}
+		return null;
 	}
 
 	// 선택한 상점의 상세 정보

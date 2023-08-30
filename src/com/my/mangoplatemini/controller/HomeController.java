@@ -5,7 +5,6 @@ import java.util.Scanner;
 import com.my.mangoplatemini.dto.MemberDTO;
 
 public class HomeController {
-	
 	MemberController memberController = new MemberController();
 	
 	public void init() {
