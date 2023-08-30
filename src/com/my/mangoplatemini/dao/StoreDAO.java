@@ -349,7 +349,6 @@ public class StoreDAO implements StoreInterface {
 		PreparedStatement preparedStatement = null;
 
 		try {
-			System.out.println("dddd");
 			connection = DriverManager.getConnection(url, user, password);
 			String updateSQL = "UPDATE STORE SET parking = ? , price = ? , open_time = ? , close_time = ? , info = ? WHERE trim(business_no) = ?";
 			preparedStatement = connection.prepareStatement(updateSQL);

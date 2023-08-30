@@ -131,12 +131,17 @@ public class StoreController {
 
 	// 상점검색
 	public void showByStoreName(MemberDTO member) {
+		while(true) {
 		System.out.println("상세보기할 매장 이름을 검색하세요.");
 		StoreDAO store = new StoreDAO();
 		String sName = scanner.nextLine();
 		String business_no = store.showByStoreName(member, sName);
-
-		this.showStoreDetail(business_no);
+		
+		if(business_no != null) {
+			this.showStoreDetail(business_no);
+			break;
+		}
+		}
 	}
 
 	// 홍식
@@ -157,7 +162,11 @@ public class StoreController {
 		System.out.println("상점주소 :"+s.getAddress());
 		System.out.println("상점카테고리 :"+s.getCategory());
 		System.out.println("상점전화번호 : "+s.getTel());
-		System.out.println();
+		if(s.getApprove() == -1) {
+			System.out.println("현재 운영 : o ");
+		}else {
+			System.out.println("현재 운영 : x ");
+		}
 		
 		showReview(business_no);
 		
