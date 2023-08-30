@@ -1,4 +1,4 @@
-package com.my.mangoplatemini.controller;
+	package com.my.mangoplatemini.controller;
 
 
 import java.util.Objects;
@@ -31,7 +31,7 @@ public class StoreController {
 			
 //		} else if (member.getUser_type() == 2 ) {
 			
-			System.out.println("1. 상점등록하기 2. 내상점 목록보기 3.상점 상세보기");
+			System.out.println("1. 상점등록하기 2. 내상점 목	록보기 3.상점 상세보기");
 			int input = Integer.parseInt(scanner.nextLine());
 			if(input == 1) {
 				createStore(member);
