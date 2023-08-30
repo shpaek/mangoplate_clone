@@ -1,5 +1,6 @@
-package com.my.mangoplatemini.controller;
+	package com.my.mangoplatemini.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
@@ -9,24 +10,32 @@ import com.my.mangoplatemini.dao.StoreDAO;
 import com.my.mangoplatemini.dao.StoreInterface;
 import com.my.mangoplatemini.dto.MemberDTO;
 import com.my.mangoplatemini.dto.MenuDTO;
+import com.my.mangoplatemini.dto.ReviewDTO;
 import com.my.mangoplatemini.dto.StoreDTO;
 
 public class StoreController {
 	private static StoreController sc = new StoreController();
-	HomeController homeController = new HomeController();
+
+//	HomeController homeController = new HomeController();
 	
 	public static StoreController getInit() {
 		return sc;
 	}
-
+	public StoreController() {
+		System.out.println("storecontroller입니다/");
+		
+	}
 	private StoreInterface storeDAO = new StoreDAO();
 	private ReviewController reviewController = new ReviewController();
 	Scanner scanner = new Scanner(System.in);
 
 	public void endlogin(MemberDTO member) {
 
+		HomeController homeController = new HomeController();
+		
 		if(member.getUser_type() == 1) {
-			System.out.println("1. 리뷰등록하기");
+			
+			System.out.println("1. 리뷰등록하기 2. 초기화면으로"); 
 			int input = Integer.parseInt(scanner.nextLine());
 			if(input == 1) {
 				
@@ -34,11 +43,14 @@ public class StoreController {
 				ReviewDAO review = new ReviewDAO();
 				
 				Map map = storeDAO.showStoreAll();
-				
+
 				reviewController.createReview(member,map);
+
+			} else if (input == 2) {
+				homeController.init();
 			} else {
-				System.out.println("ㄴㄴ");
-			}
+				System.out.println("잘못된 입력입니다.");
+			} // if-else 
 
 		} else if (member.getUser_type() == 2 ) {
 
@@ -146,8 +158,25 @@ public class StoreController {
 	// 홍식
 	// 상점 상세정보
 	public void showStoreDetail(String business_no) {
-		storeDAO.showStoreDetail(business_no);
-
+		
+		HomeController homeController = new HomeController();
+		
+		StoreDTO s = storeDAO.showStoreDetail(business_no);
+		System.out.println();
+		System.out.println("=======상점상세정보=======");
+		System.out.println("상점명 :"+s.getName());
+		System.out.println("상점오픈시간 :"+s.getOpen_time());
+		System.out.println("상점마감시간 :"+s.getClose_time());
+		System.out.println("상점설명 :"+s.getInfo());
+		System.out.println("상점주차여부 :"+s.getParking());
+		System.out.println("상점가격대 :"+s.getPrice());
+		System.out.println("상점주소 :"+s.getAddress());
+		System.out.println("상점카테고리 :"+s.getCategory());
+		System.out.println("상점전화번호 : "+s.getTel());
+		System.out.println();
+		
+		showReview(business_no);
+		
 		StoreDTO priviewDTO = new StoreDTO();
 
 		while (true) {
@@ -173,6 +202,15 @@ public class StoreController {
 		}
 	}
 
+	public void showReview(String business_no) {
+		List<String> result = storeDAO.showStoreReview(business_no);
+		System.out.println("======리뷰======");
+		for (String string : result) {
+			System.out.println(string);
+		}
+		
+		
+	}
 	// 상점 정보 삭제
 	public void deleteStore(String business_no) {
 		storeDAO.deleteStore(business_no);
@@ -186,29 +224,29 @@ public class StoreController {
 
 			System.out.println("수정할 사항을 입력해주세요.");
 			System.out.println("1.오픈시간, 2.마감시간 3.가게정보 4.주차여부 5.가격대");
-			Integer input = Integer.parseInt(scanner.nextLine());
+			String input = scanner.nextLine();
 
-			if (input == 1) {
+			if (input.equals("1")) {
 				System.out.println("수정할 오픈시간을 입력하세요");
 				String open_time = scanner.nextLine();
 				previewDTO.setOpen_time(open_time);
 				break;
-			} else if (input == 2) {
+			} else if (input.equals("2")) {
 				System.out.println("수정할 마감시간을 입력하세요");
 				String close_time = scanner.nextLine();
 				previewDTO.setClose_time(close_time);
 				break;
-			} else if (input == 3) {
+			} else if (input.equals("3")) {
 				System.out.println("수정할 가게정보을 입력하세요");
 				String info = scanner.nextLine();
 				previewDTO.setInfo(info);
 				break;
-			} else if (input == 4) {
+			} else if (input.equals("4")) {
 				System.out.println("수정할 주차여부를 입력하세요");
 				String parking = scanner.nextLine();
 				previewDTO.setParking(parking);
 				break;
-			} else if (input == 5) {
+			} else if (input.equals("5")) {
 				System.out.println("수정할 가격대를 입력하세요");
 				String price = scanner.nextLine();
 				previewDTO.setPrice(price);
