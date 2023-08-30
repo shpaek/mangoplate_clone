@@ -11,10 +11,10 @@ public class ReviewDAO implements ReviewInterface {
 	// 공통
 	// DB정보
 	Connection conn = null;
-//	String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
-	String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	String user = "mango";
-	String password = "mango";
+	String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
+//	String url = "jdbc:oracle:thin:@localhost:1521:xe";
+	String user = "msa1";
+	String password = "msa1";
 
 	// 서버 연결
 	public void connectServer() {
@@ -43,7 +43,7 @@ public class ReviewDAO implements ReviewInterface {
 		// SQL문 송신 객체 생성
 		PreparedStatement pstmt = null;
 		String insertSQL = "INSERT INTO review(no, business_no, user_id, content, review_date, rating)"
-				+ "VALUES(emp_seq.NEXTVAL, ?, ?, ?, SYSDATE, ?)"; // review_seq.NEXTVAL
+				+ "VALUES(review_seq.NEXTVAL, ?, ?, ?, SYSDATE, ?)"; // review_seq.NEXTVAL
 		// business_no랑 user_id는 가져오는 값.. 수정 필요..
 		
 //		PreparedStatement cpstmt = null;

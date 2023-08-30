@@ -1,10 +1,13 @@
 package com.my.mangoplatemini.controller;
 
+import java.util.Map;
 import java.util.Scanner;
 
 import com.my.mangoplatemini.dao.ReviewDAO;
 import com.my.mangoplatemini.dao.ReviewInterface;
+import com.my.mangoplatemini.dto.MemberDTO;
 import com.my.mangoplatemini.dto.ReviewDTO;
+import com.my.mangoplatemini.dto.StoreDTO;
 
 public class ReviewController {
 	
@@ -12,9 +15,14 @@ public class ReviewController {
 	
 	ReviewInterface review = new ReviewDAO();
 	
-	public void createReview(String userId, String busniessNo) {
-		
+	StoreController storeController = StoreController.getInit();
+	
+	public void createReview(MemberDTO mdto, Map map) {
+
 		while(true) {
+			
+			System.out.println("리뷰를 작성하실 가게번호를 입력해주세요 :");
+			Integer input = Integer.parseInt(sc.nextLine());
 		
 			// 작성한 리뷰를 담을 변수 생성
 			System.out.println("리뷰를 작성해주세요 :)");
@@ -44,9 +52,9 @@ public class ReviewController {
             } // Inner while
 			
             ReviewDTO dto = new ReviewDTO();
-	
-	        dto.setBusiness_no(busniessNo);
-	        dto.setUser_id(userId);
+            
+            dto.setBusiness_no((String)map.get(input));
+	        dto.setUser_id(mdto.getId());
 	        dto.setContent(content);
 	        dto.setRating(grade);
 	
@@ -56,6 +64,8 @@ public class ReviewController {
 			break;
 
 		} //while
+		
+		storeController.endlogin(mdto);
 		
 	} // createReview
 
