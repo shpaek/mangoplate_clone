@@ -17,6 +17,10 @@ public class ReviewController {
 	ReviewInterface review = new ReviewDAO();
 	
 	public void createReview(MemberDTO mdto, Map map) {
+		
+		StoreController storeController = new StoreController();
+		
+        ReviewDTO dto = new ReviewDTO();
 
 		while(true) {
 			
@@ -49,13 +53,13 @@ public class ReviewController {
                 } // try-catch
                 
             } // Inner while
-			
-            ReviewDTO dto = new ReviewDTO();
             
             dto.setBusiness_no((String)map.get(input));
 	        dto.setUser_id(mdto.getId());
 	        dto.setContent(content);
 	        dto.setRating(grade);
+	        
+	        System.out.println("while문 내부 mdto id : " + mdto.getId());
 	
 	        // dto 객체를 보내서 로직 처리
 	        review.createReview(dto);
@@ -63,12 +67,10 @@ public class ReviewController {
 			break;
 
 		} //while
-		
-		// 로그인된 화면으로 이동
-		StoreController storeController = new StoreController();
 
+		// 로그인된 화면으로 이동
 		storeController.endlogin(mdto);
-		
+			
 	} // createReview
 
 } // end class
