@@ -16,9 +16,6 @@ public class ReviewController {
 	
 	ReviewInterface review = new ReviewDAO();
 	
-	
-	public ReviewController() {
-	}
 	public void createReview(MemberDTO mdto, Map map) {
 
 		while(true) {
@@ -69,9 +66,7 @@ public class ReviewController {
 		
 		// 로그인된 화면으로 이동
 		StoreController storeController = new StoreController();
-		System.out.println(storeController);
-		System.out.println(mdto.getId());
-		System.out.println(mdto.getName());
+
 		storeController.endlogin(mdto);
 		
 	} // createReview
