@@ -16,7 +16,7 @@ import com.my.mangoplatemini.dto.StoreDTO;
 public class StoreController {
 	private static StoreController sc = new StoreController();
 
-	HomeController homeController = new HomeController();
+//	HomeController homeController = new HomeController();
 	
 	public static StoreController getInit() {
 		return sc;
@@ -31,8 +31,11 @@ public class StoreController {
 
 	public void endlogin(MemberDTO member) {
 
+		HomeController homeController = new HomeController();
+		
 		if(member.getUser_type() == 1) {
-			System.out.println("1. 리뷰등록하기");
+			
+			System.out.println("1. 리뷰등록하기 2. 초기화면으로"); 
 			int input = Integer.parseInt(scanner.nextLine());
 			if(input == 1) {
 				
@@ -43,6 +46,8 @@ public class StoreController {
 
 				reviewController.createReview(member,map);
 
+			} else if (input == 2) {
+				homeController.init();
 			} else {
 				System.out.println("잘못된 입력입니다.");
 			} // if-else 
@@ -137,6 +142,9 @@ public class StoreController {
 	// 홍식
 	// 상점 상세정보
 	public void showStoreDetail(String business_no) {
+		
+		HomeController homeController = new HomeController();
+		
 		StoreDTO s = storeDAO.showStoreDetail(business_no);
 		System.out.println();
 		System.out.println("=======상점상세정보=======");

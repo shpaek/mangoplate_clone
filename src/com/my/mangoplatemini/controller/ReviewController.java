@@ -69,8 +69,6 @@ public class ReviewController {
 		} //while
 
 		// 로그인된 화면으로 이동
-		StoreController storeController = new StoreController();
-
 		storeController.endlogin(mdto);
 			
 	} // createReview
