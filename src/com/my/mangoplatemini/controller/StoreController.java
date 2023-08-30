@@ -48,7 +48,7 @@ public class StoreController {
 
         } else if (member.getUser_type() == 2) {
 
-            System.out.println("1. 상점 등록    2. 내 상점 목록    3.상점 상세정보");
+            System.out.println("1. 상점 등록    2. 내 상점 목록    3. 상점 상세정보");
             int input = Integer.parseInt(scanner.nextLine());
             if (input == 1) {
                 createStore(member);
@@ -128,12 +128,15 @@ public class StoreController {
     // 상점목록조회
     public void showStore(MemberDTO member) {
         storeDAO.showStore(member);
+        while(true) {
         System.out.println("이전 화면으로 가시려면 Y를 입력해주세요");
         String input = scanner.nextLine();
         if (input.equals("y") || input.equals("Y")) {
             endlogin(member);
+            break;
         } else {
             System.out.println("※잘못된 입력입니다.다시 입력해 주세요.※");
+        }
         }
     }
 
@@ -171,7 +174,7 @@ public class StoreController {
         StoreDTO priviewDTO = new StoreDTO();
 
         while (true) {
-            System.out.println("1.메뉴 보기    2.상점 수정    3.상점 삭제    4.초기 화면으로");
+            System.out.println("1. 메뉴 보기    2. 상점 수정    3. 상점 삭제    4. 초기 화면으로");
             String input = scanner.nextLine();
             if (input.equals("1")) {
                 showMenu(business_no);
@@ -287,7 +290,7 @@ public class StoreController {
         String no;
 
         while (true) {
-            System.out.println("1. 메뉴 등록    2.메뉴 수정    3. 메뉴 삭제    4. 이전 화면");
+            System.out.println("1. 메뉴 등록    2. 메뉴 수정    3. 메뉴 삭제    4. 이전 화면");
             no = scanner.nextLine();
             if (Objects.equals(no, "1")) {
                 crateMenu(business_no);

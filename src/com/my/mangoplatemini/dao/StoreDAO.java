@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,12 +19,12 @@ public class StoreDAO implements StoreInterface {
     // 공통
     // 서버정보
     Connection conn = null;
-    //    String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
-//    String user = "msa1";
-//    String password = "msa1";
-    String url = "jdbc:oracle:thin:@localhost:1521:xe";
-    String user = "mango";
-    String password = "mango";
+    String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
+    String user = "msa1";
+    String password = "msa1";
+//    String url = "jdbc:oracle:thin:@localhost:1521:xe";
+//    String user = "mango";
+//    String password = "mango";
 
     public void connectServer() {
         try {
@@ -65,8 +66,10 @@ public class StoreDAO implements StoreInterface {
             pstmt.setInt(12, 0);
             pstmt.executeUpdate();
             System.out.println("상점이 등록되었습니다");
+        } catch(SQLIntegrityConstraintViolationException e) {
+        	System.out.println("이미 등록된 가게입니다");
         } catch (SQLException e) {
-            e.printStackTrace();
+        	System.out.println("등록 가능한 글자수를 초과했습니다");
         } finally {
             if (pstmt != null) {
                 try {
@@ -140,7 +143,7 @@ public class StoreDAO implements StoreInterface {
 
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        String selectSQL = "SELECT business_no, name, approve FROM STORE";
+        String selectSQL = "SELECT business_no, name FROM STORE WHERE approve = 1";
         try {
             pstmt = conn.prepareStatement(selectSQL);
             rs = pstmt.executeQuery();
@@ -148,11 +151,9 @@ public class StoreDAO implements StoreInterface {
             while (rs.next()) {
                 String business_no = rs.getString(1);
                 String name = rs.getString(2);
-                int approve = rs.getInt(3);
-                if (approve == 1) {
-                    System.out.println(rs.getRow() + ". " + name);
-                    map.put(rs.getRow(), business_no);
-                }
+
+                System.out.println(rs.getRow() + ". " + name);
+                map.put(rs.getRow(), business_no);
             }
             return map;
         } catch (SQLException e) {
@@ -200,9 +201,11 @@ public class StoreDAO implements StoreInterface {
                 int appr = rs.getInt(3);
 
                 if (appr == 0) {
-                    System.out.println("상점명 : " + name + "승인여부 : 미승인");
+                    System.out.println("상점명 : " + name);
+                    System.out.println("승인여부 : 미승인");
                 } else if (appr == 1) {
-                    System.out.println("상점명 : " + name + "승인여부 : 승인");
+                	System.out.println("상점명 : " + name);
+                    System.out.println("승인여부 : 승인");
                 }
                 return rs.getNString("business_no");
             }
