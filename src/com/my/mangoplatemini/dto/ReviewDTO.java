@@ -18,7 +18,10 @@ public class ReviewDTO {
 	private Date review_date;		// 리뷰등록 날짜
 	
 	private Integer rating;			// 평점
-
+	
+	
+	// ====================================================================
+	
 	public Integer getNo() {
 		return no;
 	}

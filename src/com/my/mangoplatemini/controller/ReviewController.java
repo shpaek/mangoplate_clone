@@ -21,11 +21,11 @@ public class ReviewController {
 
 		while(true) {
 			
-			System.out.println("리뷰를 작성하실 가게번호를 입력해주세요 :");
+			System.out.println("리뷰를 작성하실 가게번호를 입력해주세요 ");
 			Integer input = Integer.parseInt(sc.nextLine());
 		
 			// 작성한 리뷰를 담을 변수 생성
-			System.out.println("리뷰를 작성해주세요 :)");
+			System.out.println("리뷰를 작성해주세요 ");
 			String content = sc.nextLine();
 
 			// 평점을 담을 변수 생성
@@ -33,9 +33,9 @@ public class ReviewController {
 		
             while (true) {
             	
-                System.out.println("평점을 입력해주세요 :) (숫자 1~5를 입력해주세요)");
+                System.out.println("평점을 입력해주세요 (숫자 1~5를 입력해주세요)");
                 
-                try {
+                try {	
                 	
                     grade = Integer.parseInt(sc.nextLine());
                     
@@ -65,6 +65,7 @@ public class ReviewController {
 
 		} //while
 		
+		// 로그인된 화면으로 이동
 		storeController.endlogin(mdto);
 		
 	} // createReview
