@@ -1,5 +1,6 @@
 	package com.my.mangoplatemini.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
@@ -9,16 +10,21 @@ import com.my.mangoplatemini.dao.StoreDAO;
 import com.my.mangoplatemini.dao.StoreInterface;
 import com.my.mangoplatemini.dto.MemberDTO;
 import com.my.mangoplatemini.dto.MenuDTO;
+import com.my.mangoplatemini.dto.ReviewDTO;
 import com.my.mangoplatemini.dto.StoreDTO;
 
 public class StoreController {
 	private static StoreController sc = new StoreController();
+
 	HomeController homeController = new HomeController();
 	
 	public static StoreController getInit() {
 		return sc;
 	}
-
+	public StoreController() {
+		System.out.println("storecontroller입니다/");
+		
+	}
 	private StoreInterface storeDAO = new StoreDAO();
 	private ReviewController reviewController = new ReviewController();
 	Scanner scanner = new Scanner(System.in);
@@ -131,8 +137,22 @@ public class StoreController {
 	// 홍식
 	// 상점 상세정보
 	public void showStoreDetail(String business_no) {
-		storeDAO.showStoreDetail(business_no);
-
+		StoreDTO s = storeDAO.showStoreDetail(business_no);
+		System.out.println();
+		System.out.println("=======상점상세정보=======");
+		System.out.println("상점명 :"+s.getName());
+		System.out.println("상점오픈시간 :"+s.getOpen_time());
+		System.out.println("상점마감시간 :"+s.getClose_time());
+		System.out.println("상점설명 :"+s.getInfo());
+		System.out.println("상점주차여부 :"+s.getParking());
+		System.out.println("상점가격대 :"+s.getPrice());
+		System.out.println("상점주소 :"+s.getAddress());
+		System.out.println("상점카테고리 :"+s.getCategory());
+		System.out.println("상점전화번호 : "+s.getTel());
+		System.out.println();
+		
+		showReview(business_no);
+		
 		StoreDTO priviewDTO = new StoreDTO();
 
 		while (true) {
@@ -158,6 +178,15 @@ public class StoreController {
 		}
 	}
 
+	public void showReview(String business_no) {
+		List<String> result = storeDAO.showStoreReview(business_no);
+		System.out.println("======리뷰======");
+		for (String string : result) {
+			System.out.println(string);
+		}
+		
+		
+	}
 	// 상점 정보 삭제
 	public void deleteStore(String business_no) {
 		storeDAO.deleteStore(business_no);
