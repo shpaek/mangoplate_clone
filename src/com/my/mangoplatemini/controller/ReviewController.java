@@ -11,11 +11,10 @@ import com.my.mangoplatemini.dto.StoreDTO;
 
 public class ReviewController {
 	
+	
 	Scanner sc = new Scanner(System.in);
 	
 	ReviewInterface review = new ReviewDAO();
-	
-	StoreController storeController = StoreController.getInit();
 	
 	public void createReview(MemberDTO mdto, Map map) {
 
@@ -66,6 +65,8 @@ public class ReviewController {
 		} //while
 		
 		// 로그인된 화면으로 이동
+		StoreController storeController = new StoreController();
+
 		storeController.endlogin(mdto);
 		
 	} // createReview
