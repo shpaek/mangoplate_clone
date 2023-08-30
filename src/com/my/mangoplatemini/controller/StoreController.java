@@ -136,6 +136,10 @@ public class StoreController {
 	}
 	
 
+	private void deleteStore(String business_no) {
+		storeDAO.deleteStore(business_no);
+		System.out.println("선택한 상점이 삭제되었습니다.");
+	}
 	// 상점 정보 수정
 	public void updateStore(StoreDTO previewDTO) {
 		while(true) {
