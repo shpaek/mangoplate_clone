@@ -11,21 +11,24 @@ import com.my.mangoplatemini.dto.StoreDTO;
 
 public class ReviewController {
 	
+	
 	Scanner sc = new Scanner(System.in);
 	
 	ReviewInterface review = new ReviewDAO();
 	
-	StoreController storeController = StoreController.getInit();
-	
 	public void createReview(MemberDTO mdto, Map map) {
+		
+		StoreController storeController = new StoreController();
+		
+        ReviewDTO dto = new ReviewDTO();
 
 		while(true) {
 			
-			System.out.println("리뷰를 작성하실 가게번호를 입력해주세요 :");
+			System.out.println("리뷰를 작성하실 가게번호를 입력해주세요 ");
 			Integer input = Integer.parseInt(sc.nextLine());
 		
 			// 작성한 리뷰를 담을 변수 생성
-			System.out.println("리뷰를 작성해주세요 :)");
+			System.out.println("리뷰를 작성해주세요 ");
 			String content = sc.nextLine();
 
 			// 평점을 담을 변수 생성
@@ -33,9 +36,9 @@ public class ReviewController {
 		
             while (true) {
             	
-                System.out.println("평점을 입력해주세요 :) (숫자 1~5를 입력해주세요)");
+                System.out.println("평점을 입력해주세요 (숫자 1~5를 입력해주세요)");
                 
-                try {
+                try {	
                 	
                     grade = Integer.parseInt(sc.nextLine());
                     
@@ -50,13 +53,13 @@ public class ReviewController {
                 } // try-catch
                 
             } // Inner while
-			
-            ReviewDTO dto = new ReviewDTO();
             
             dto.setBusiness_no((String)map.get(input));
 	        dto.setUser_id(mdto.getId());
 	        dto.setContent(content);
 	        dto.setRating(grade);
+	        
+	        System.out.println("while문 내부 mdto id : " + mdto.getId());
 	
 	        // dto 객체를 보내서 로직 처리
 	        review.createReview(dto);
@@ -64,9 +67,10 @@ public class ReviewController {
 			break;
 
 		} //while
-		
+
+		// 로그인된 화면으로 이동
 		storeController.endlogin(mdto);
-		
+			
 	} // createReview
 
 } // end class

@@ -12,60 +12,52 @@ public class MemberDAO implements MemberInterface {
 
 
 
+	public int login(MemberDTO member) {
+		Connection conn = null;
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "mango";
+		String password = "mango";
+		try {
+			conn = DriverManager.getConnection(url, user, password);
+			System.out.println("DB 접속 성공");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// 4. SQL구문 송신
+		PreparedStatement pstmt = null;
+		String selectSQL = "select id , password from member where id = ? and password = ?";
+		try {
+			pstmt = conn.prepareStatement(selectSQL);
+			pstmt.setString(1,member.getId());
+			pstmt.setString(2,member.getPassword());
+			ResultSet s = pstmt.executeQuery();
+			while(s.next()) {
+				if (member.getId().equals(s.getString("id")) && member.getPassword().equals(s.getString("password"))){
+					System.out.println("로그인 성공");
+				}
+				else {
+					System.out.println("잘못입력");
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+		return 0;
 
-	 @Override
-	   public void login(MemberDTO member) throws Exception {
-	      System.out.println(member.getId()+ " " + member.getPassword());
-
-	      Connection conn = null;
-	      String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
-	      String user = "msa1";
-	      String password = "msa1";
-	      try {
-	         conn = DriverManager.getConnection(url, user, password);
-	         System.out.println("DB 접속 성공");
-	      } catch (SQLException e) {
-	         e.printStackTrace();
-	      }
-
-	      // 4. SQL구문 송신
-	      PreparedStatement pstmt = null;
-	      String selectSQL = "select user_status from member where id = ? and password = ?";
-	      try {
-	         pstmt = conn.prepareStatement(selectSQL);
-	         pstmt.setString(1,member.getId());
-	         pstmt.setString(2,member.getPassword());
-	         ResultSet s = pstmt.executeQuery();
-
-	         if (s.next()) {
-	            int userStatus = s.getInt("user_status");
-	            System.out.println(userStatus);
-	            if (userStatus == 1) {
-	               System.out.println("로그인 성공");
-	            }else {
-	               System.out.println("로그인이 불가능합니다.");
-	            }
-
-	         }else {
-	            throw new Exception("로그인에 실패하셨습니다");
-	            }
-	      } catch (SQLException e) {
-	         e.printStackTrace();
-	      } finally {
-	         if (pstmt != null) {
-	            try {
-	               pstmt.close();
-	            } catch (SQLException e) {
-	            }
-	         }
-	         if (conn != null) {
-	            try {
-	               conn.close();
-	            } catch (SQLException e) {
-	            }
-	         }
-	      }
-	   }
+	}
 
 	@Override
 	public void createMember(MemberDTO member) {

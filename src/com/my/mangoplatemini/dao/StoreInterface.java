@@ -1,9 +1,11 @@
 package com.my.mangoplatemini.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import com.my.mangoplatemini.dto.MemberDTO;
 import com.my.mangoplatemini.dto.MenuDTO;
+import com.my.mangoplatemini.dto.ReviewDTO;
 import com.my.mangoplatemini.dto.StoreDTO;
 
 public interface StoreInterface {
@@ -41,7 +43,7 @@ public interface StoreInterface {
 	/*
 	 * 스토어의 상세정보를 볼 수 있다.
 	 */
-	public void showStoreDetail(String business_no);
+	public StoreDTO showStoreDetail(String business_no);
 
 	/*
 	 * 스토어 수정할 수 있다.
@@ -59,6 +61,8 @@ public interface StoreInterface {
 	 * 스토어 하나의 정보를 가져올 수 있다.
 	 */
 	public StoreDTO showStoreOne(String business_no);
+	
+	public List<String> showStoreReview(String business_no);
 	
 	
     //학윤

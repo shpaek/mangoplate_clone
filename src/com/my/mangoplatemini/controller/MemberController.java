@@ -5,7 +5,8 @@ import com.my.mangoplatemini.dao.MemberDAO;
 import com.my.mangoplatemini.dto.MemberDTO;
 
 public class MemberController {
-
+	StoreController storeController = StoreController.getInit();
+	
 	Scanner scanner = new Scanner(System.in);      
 	MemberDAO memberdao = new MemberDAO();
 
@@ -18,17 +19,13 @@ public class MemberController {
 		      System.out.println("비밀번호를 입력하세요:");
 		      String loginPassword = scanner.nextLine();
 
-		      MemberDTO member = new MemberDTO();
-		      member.setId(loginId);
-		      member.setPassword(loginPassword);
-		      try {
-		         memberdao.login(member);
-		      } catch (Exception e) {
-		         System.out.println(e.getMessage());
-		         return;
-		      }
-		      StoreController storeController = new StoreController();
-		      storeController.endlogin(member);
+			MemberDTO member = new MemberDTO();
+			member.setId(loginId);
+			member.setPassword(loginPassword);
+			int user_type = memberdao.login(member);
+			member.setUser_type(user_type);
+			
+			storeController.endlogin(member);
 
 	   }
 

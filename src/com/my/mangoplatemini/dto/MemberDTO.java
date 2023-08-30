@@ -17,7 +17,7 @@
 		//1 -> 0
 	
 	
-		public Integer getUser_type() {
+		public int getUser_type() {
 			return user_type;
 		}
 	
