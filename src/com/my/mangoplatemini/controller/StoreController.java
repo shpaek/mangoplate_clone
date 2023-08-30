@@ -142,13 +142,18 @@ public class StoreController {
 
     // 상점검색
     public void showByStoreName(MemberDTO member) {
-        System.out.println("상세정보를 원하는 매장명을 입력해주세요.");
-        StoreDAO store = new StoreDAO();
-        String sName = scanner.nextLine();
-        String business_no = store.showByStoreName(member, sName);
-
-        this.showStoreDetail(business_no);
-    }
+    	while(true) {
+    		System.out.println("상세보기할 매장 이름을 검색하세요.");
+    		StoreDAO store = new StoreDAO();
+    		String sName = scanner.nextLine();
+    		String business_no = store.showByStoreName(member, sName);
+    		
+    		if(business_no != null) {
+    			this.showStoreDetail(business_no);
+    			break;
+    		}
+    		}
+    	}
 
     // 홍식
     // 상점 상세정보
@@ -168,6 +173,11 @@ public class StoreController {
         System.out.println("\n카테고리 : " + s.getCategory());
         System.out.println("\n상점설명 : " + s.getInfo());
         System.out.println("\n주차여부 : " + s.getParking() + "\n");
+        if(s.getApprove() == -1) {
+        	System.out.println("상점 운영 여부 : X");
+        }else {
+        	System.out.println("상점 운영 여부 : O");
+        }
 
         showReview(business_no);
 
@@ -374,3 +384,4 @@ public class StoreController {
     }
 
 }
+
