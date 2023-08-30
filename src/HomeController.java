@@ -3,8 +3,7 @@
 import java.util.Scanner;
 
 import com.my.mangoplatemini.controller.MemberController;
-
-public class HomeController {
+class HomeController {
 	MemberController memberController = new MemberController();
 	
 	public void init() {
