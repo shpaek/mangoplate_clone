@@ -1,5 +1,6 @@
 package com.my.mangoplatemini.controller;
 
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -69,7 +70,11 @@ public class ReviewController {
 		} //while
 
 		// 로그인된 화면으로 이동
-		storeController.endlogin(mdto);
+		try {
+			storeController.endlogin(mdto);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 			
 	} // createReview
 

@@ -1,16 +1,17 @@
 package com.my.mangoplatemini.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
+import com.my.mangoplatemini.dao.MemberDAO;
 import com.my.mangoplatemini.dao.ReviewDAO;
 import com.my.mangoplatemini.dao.StoreDAO;
 import com.my.mangoplatemini.dao.StoreInterface;
 import com.my.mangoplatemini.dto.MemberDTO;
 import com.my.mangoplatemini.dto.MenuDTO;
-import com.my.mangoplatemini.dto.ReviewDTO;
 import com.my.mangoplatemini.dto.StoreDTO;
 
 public class StoreController {
@@ -29,24 +30,62 @@ public class StoreController {
 	private ReviewController reviewController = new ReviewController();
 	Scanner scanner = new Scanner(System.in);
 
-	public void endlogin(MemberDTO member) {
+	public void endlogin(MemberDTO member) throws SQLException {
 
 		HomeController homeController = new HomeController();
 		
-		if(member.getUser_type() == 1) {
-			
-			System.out.println("1. 리뷰등록하기 2. 초기화면으로"); 
-			int input = Integer.parseInt(scanner.nextLine());
-			if(input == 1) {
-				
-				StoreDTO storeDTO = new StoreDTO();
-				ReviewDAO review = new ReviewDAO();
-				
-				Map map = storeDAO.showStoreAll();
+		  while (true) {
+		       if (member.getUser_type() == 1) {
+		           System.out.println("1. 리뷰등록하기 2.회원정보수정 3. 회원 탈퇴 4. 초기화면으로");
+		           int input = Integer.parseInt(scanner.nextLine());
 
-				reviewController.createReview(member,map);
+		           if (input == 1) {
+		                // 리뷰 등록 로직
+		           } else if (input == 2) {
+		               MemberDTO memberDTO = new MemberDTO();
+		               memberDTO.setId(member.getId());
+		               System.out.println("수정할 항목을 선택해주세요.");
+		               System.out.println("1. 비밀번호, 2. 이메일, 3. 이름, 4. 전화번호");
+		               int Input = Integer.parseInt(scanner.nextLine());
+		               if (Input == 1) {
+		                   System.out.println("새로운 비밀번호를 입력하세요");
+		                   String newPassword = scanner.nextLine();
+		                   memberDTO.setPassword(newPassword);
+		               } else if (Input == 2) {
+		                   System.out.println("새로운 이메일을 입력하세요");
+		                   String newEmail = scanner.nextLine();
+		                   memberDTO.setEmail(newEmail);
+		                } else if (Input == 3) {
+		                   System.out.println("새로운 이름을 입력하세요");
+		                   String newName = scanner.nextLine();
+		                   memberDTO.setName(newName);
+		               } else if (Input == 4) {
+		                   System.out.println("새로운 전화번호를 입력하세요");
+		                   String newTel = scanner.nextLine();
+		                   memberDTO.setTel(newTel);
+		               } else {
+		                   System.out.println("잘못된 입력입니다.");
+		                   continue; 
+		                }
+		                MemberDAO memberDAO = new MemberDAO();
+		                memberDAO.updateMember(memberDTO);
+		                System.out.println("회원 정보가 수정되었습니다.");
+				
+			} else if (input == 3) {
+				MemberDTO memberDTO = new MemberDTO();
+				memberDTO.setId(member.getId());
 
-			} else if (input == 2) {
+				MemberDAO memberDAO = new MemberDAO();
+				System.out.println("정말 탈퇴하시겠습니까? 탈퇴하시려면 숫자를 입력해주세요 (0 : 취소) ");
+				int no = Integer.parseInt(scanner.nextLine());
+
+				if (no != 0) {
+				    memberDAO.deleteMember(memberDTO);
+				    System.out.println("회원 비활성화 완료.");
+				} else {
+				    System.out.println("탈퇴를 취소합니다.");
+				}
+			} else if (input == 4) {
 				homeController.init();
 			} else {
 				System.out.println("잘못된 입력입니다.");
@@ -65,7 +104,9 @@ public class StoreController {
 			this.showByStoreName(member);
 		}
 
-		} //if-else
+		} 
+		       }	       
+	
 
 	} // endlogin
 		// 상점등록
@@ -128,7 +169,11 @@ public class StoreController {
 		store.setInfo(info);
 
 		storeDAO.createStore(member, store);
-		endlogin(member);
+		try {
+			endlogin(member);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// 상점목록조회
@@ -138,7 +183,11 @@ public class StoreController {
 		System.out.println("이전화면으로 가시려면 y를 눌러주세요");
 		String input = scanner.nextLine();
 		if (input.equals("y")) {
-			endlogin(member);
+			try {
+				endlogin(member);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} else {
 			System.out.println("다시 입력");
 		}

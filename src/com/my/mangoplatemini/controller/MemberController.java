@@ -1,4 +1,5 @@
 package com.my.mangoplatemini.controller;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import com.my.mangoplatemini.dao.MemberDAO;
@@ -25,7 +26,15 @@ public class MemberController {
 		int user_type = memberdao.login(member);
 		member.setUser_type(user_type);
 		
-		storeController.endlogin(member);
+		try {
+			try {
+				storeController.endlogin(member);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	} // login
 
@@ -68,8 +77,56 @@ public class MemberController {
 		login();
 	
 	} // createMember
+	
+	public void updateMember(MemberDTO memberDTO) {
+	    while (true) {
+	        System.out.println("수정할 사항을 입력해주세요.");
+	        System.out.println("1.비밀번호, 2.이메일, 3.이름, 4.전화번호");
+	        Integer input = Integer.parseInt(scanner.nextLine());
 
-} // end class
+	        if (input == 1) {
+	            System.out.println("수정할 비밀번호를 입력하세요");
+	            String password = scanner.nextLine();
+	            memberDTO.setPassword(password);
+	            break;
+	        } else if (input == 2) {
+	            System.out.println("수정할 이메일을 입력하세요");
+	            String email = scanner.nextLine();
+	            memberDTO.setEmail(email);
+	            break;
+	        } else if (input == 3) {
+	            System.out.println("수정할 이름을 입력하세요");
+	            String name = scanner.nextLine();
+	            memberDTO.setName(name);
+	            break;
+	        } else if (input == 4) {
+	            System.out.println("수정할 전화번호를 입력하세요");
+	            String tel = scanner.nextLine();
+	            memberDTO.setTel(tel);
+	            break;
+	        } else {
+	            System.out.println("잘못입력하셨습니다. 다시입력해주세요");
+	        }
+	    }
+	    MemberDAO memberDAO = new MemberDAO();
+	    memberDAO.updateMember(memberDTO);
+	    System.out.println("수정되었습니다.");
+	} // updateMember
+	
+	public void deleteMember(MemberDTO memberDTO) throws SQLException {
+	    System.out.println("정말 탈퇴하시겠습니까? 탈퇴하시려면 숫자를 입력해주세요 (0 : 취소) ");
+	    int no = Integer.parseInt(scanner.nextLine());
+	    
+	    if (no != 0) {  
+	        MemberDAO memberDAO = new MemberDAO();
+			memberDAO.deleteMember(memberDTO.getId());
+			System.out.println("회원 비활성화 완료.");
+	    } else {
+	        System.out.println("탈퇴를 취소합니다.");
+	    }
+	}
+
+	} // end class
 
 
 
