@@ -62,30 +62,46 @@ public class StoreController {
 
 		StoreDTO store = new StoreDTO();
 
-		System.out.println("사업자등록번호를 입력하세요.(숫자 10자리)");
-		String business_no = scanner.nextLine();
+		String business_no = null;
+		String name="";
+		String address="";
+		String category="";
+		String tel="";
 		
-		while (business_no.length() != 10) {
+		do {
 			System.out.println("사업자등록번호를 입력하세요.(숫자 10자리)");
 			business_no = scanner.nextLine();
-		}
-		
+		} while(business_no.length() != 10);
 		store.setBusiness_no(business_no);
-		System.out.println("상점명을 입력하세요.");
-		String name = scanner.nextLine();
+		
+		while(name.length()==0) {
+			System.out.println("상점명을 입력하세요.(필수입력)");
+			name = scanner.nextLine();
+		}
 		store.setName(name);
-		System.out.println("상점주소를 입력하세요.");
-		String address = scanner.nextLine();
+
+		while(address.length()==0) {
+			System.out.println("상점주소를 입력하세요.(필수입력)");
+			address = scanner.nextLine();
+		}
 		store.setAddress(address);
+		
 		System.out.println("가격대를 입력하세요.");
 		String price = scanner.nextLine();
 		store.setPrice(price);
-		System.out.println("카테고리를 입력하세요.");
-		String category = scanner.nextLine();
+		
+		while(category.length()==0) {
+			System.out.println("카테고리를 입력하세요.(필수입력)");
+			category = scanner.nextLine();
+		}
 		store.setCategory(category);
-		System.out.println("전화번호를 입력하세요.");
-		String tel = scanner.nextLine();
+		
+		while(tel.length()==0) {
+			System.out.println("전화번호를 입력하세요.(필수입력)");
+			tel = scanner.nextLine();
+		}
 		store.setTel(tel);
+		
 		System.out.println("주차여부를 입력하세요.");
 		String parking = scanner.nextLine();
 		store.setParking(parking);

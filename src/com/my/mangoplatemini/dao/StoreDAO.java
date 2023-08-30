@@ -134,11 +134,14 @@ public class StoreDAO implements StoreInterface {
 				int approve = rs.getInt(2);
 
 				if (approve == 0) {
-					System.out.println(name + "    미승인");
-				} else {
-					System.out.println(name + "    승인");
+					System.out.println(name + " : 미승인");
+				} else if (approve == 1) {
+					System.out.println(name + " : 승인");
+				} else if (approve == -1) {
+					System.out.println(name + " : 삭제요청");
 				}
 			}
+			System.out.println();
 			System.out.println("조회완료");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -287,7 +290,7 @@ public class StoreDAO implements StoreInterface {
 
 				if (appr == 0) {
 					System.out.println(name + "    미승인");
-				} else {
+				} else if (appr == 1) {
 					System.out.println(name + "    승인");
 				}
 				
