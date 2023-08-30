@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.my.mangoplatemini.dto.MemberDTO;
 import com.my.mangoplatemini.dto.MenuDTO;
@@ -86,7 +88,7 @@ public class StoreDAO implements StoreInterface {
 	}
 	
 
-	// 상점목록조회
+	// 점주상점목록조회
 	@Override
 	public void showStore(MemberDTO member) {
 		String id = member.getId();
@@ -120,7 +122,7 @@ public class StoreDAO implements StoreInterface {
 		ResultSet rs = null;
 
 
-		String selectSQL = "SELECT name, approve\r\n" + "FROM STORE\r\n" + "WHERE user_id = ?";
+		String selectSQL = "SELECT name, approve FROM STORE WHERE user_id = ?";
 
 		try {
 			pstmt = conn.prepareStatement(selectSQL);
@@ -164,6 +166,79 @@ public class StoreDAO implements StoreInterface {
 		}
 
 
+	}
+	
+	// 전체상점목록조회
+	@Override
+	public Map showStoreAll() {
+		// 1. 드라이버클래스들 JVM에 로드
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			System.out.println("JDBC드라이버 로드성공");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		// 2.DB와 연결
+		Connection conn = null;
+		// ip바꿔주기
+		String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
+		String user = "msa1";
+		String password = "msa1";
+
+		try {
+			conn = DriverManager.getConnection(url, user, password);
+			System.out.println("DB접속 성공");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		// 3.SQL구문 송신
+		PreparedStatement pstmt = null;
+
+		// 4.SQL문 결과 수신하기
+		ResultSet rs = null;
+
+		String selectSQL = "SELECT business_no, name, approve FROM STORE";
+
+		try {
+			pstmt = conn.prepareStatement(selectSQL);
+			rs = pstmt.executeQuery();
+			Map map = new HashMap();
+			while (rs.next()) {
+				String business_no = rs.getString(1);
+				String name = rs.getString(2);
+				int approve = rs.getInt(3);
+				if (approve == 1) {
+					System.out.println(rs.getRow()+". "+name);
+					map.put(rs.getRow(), business_no);
+				}
+			}
+			System.out.println("조회완료");
+			return map;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+		return null;
 	}
 
 	// 상점검색
@@ -330,14 +405,14 @@ public class StoreDAO implements StoreInterface {
 
 		connectServer();
 		ResultSet resultSet = null;
-
+		PreparedStatement preparedStatement = null;
 		try {
 			connection = DriverManager.getConnection(url, user, password);
 
 			String selectSQL = "select name, address, price, category, tel, parking,"
-					+ " open_time, close_time, info, rating ,review_cnt from store where trim(business_no) = ?";
+					+ " open_time, close_time, info, rating ,review_cnt, approve from store where trim(business_no) = ?";
 
-			PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+		preparedStatement = connection.prepareStatement(selectSQL);
 
 			preparedStatement.setString(1, business_no);
 			resultSet = preparedStatement.executeQuery();
@@ -348,14 +423,24 @@ public class StoreDAO implements StoreInterface {
 				System.out.println("가게명 : " + resultSet.getString("name"));
 				System.out.println("주소 : " + resultSet.getString("address"));
 				System.out.println("가격대 : " + resultSet.getString("price"));
+				System.out.println("오픈시간 : " + resultSet.getString("open_time"));
+				System.out.println("종료시간 : " + resultSet.getString("close_time"));
 				System.out.println("카테고리 : " + resultSet.getString("category"));
 				System.out.println("전화번호 : " + resultSet.getString("tel"));
 				System.out.println("주차여부 : " + resultSet.getString("parking"));
+				System.out.println("상점상태 : " + resultSet.getString("approve"));
 			}
 			System.out.println();
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				preparedStatement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		showStoreReview(business_no);
@@ -366,13 +451,14 @@ public class StoreDAO implements StoreInterface {
 	public void showStoreReview(String business_no) {
 		connectServer();
 		ResultSet resultSet = null;
+		PreparedStatement preparedStatement = null;
 
 		try {
 			connection = DriverManager.getConnection(url, user, password);
 
 			String selectSQL = "select content \n" + "from review \n" + "where trim(business_no) = ?";
 
-			PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+			preparedStatement = connection.prepareStatement(selectSQL);
 
 			preparedStatement.setString(1, business_no);
 			resultSet = preparedStatement.executeQuery();
@@ -383,6 +469,13 @@ public class StoreDAO implements StoreInterface {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				preparedStatement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -392,6 +485,7 @@ public class StoreDAO implements StoreInterface {
 		StoreDTO storeDTO = new StoreDTO();
 		connectServer();
 		ResultSet resultSet = null;
+		PreparedStatement preparedStatement = null;
 
 		try {
 			connection = DriverManager.getConnection(url, user, password);
@@ -399,7 +493,7 @@ public class StoreDAO implements StoreInterface {
 			String selectSQL = "select price, category, parking,"
 					+ " open_time, close_time, info from store where trim(business_no) = ?";
 
-			PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+			preparedStatement = connection.prepareStatement(selectSQL);
 
 			preparedStatement.setString(1, business_no);
 			resultSet = preparedStatement.executeQuery();
@@ -415,6 +509,13 @@ public class StoreDAO implements StoreInterface {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				preparedStatement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return storeDTO;
 
@@ -435,9 +536,8 @@ public class StoreDAO implements StoreInterface {
 			PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
 			preparedStatement.setString(1, menuDTO.getBusiness_no());
 			preparedStatement.setString(2, menuDTO.getName());
-			preparedStatement.setInt(3, menuDTO.getPrice());
+			preparedStatement.setString(3, menuDTO.getPrice());
 			int createCnt = preparedStatement.executeUpdate();
-			System.out.println(createCnt);
 			if (createCnt == 0) {
 				System.out.println(" ");
 				System.out.println("※메뉴 등록에 실패하였습니다.※");
@@ -519,7 +619,7 @@ public class StoreDAO implements StoreInterface {
 			String updateMenu = " UPDATE MENU \r\n" + "    SET name = ?, price = ? \r\n" + "  WHERE no = ?";
 			PreparedStatement preparedStatement = connection.prepareStatement(updateMenu);
 			preparedStatement.setString(1, menuDTO.getName());
-			preparedStatement.setInt(2, menuDTO.getPrice());
+			preparedStatement.setString(2, menuDTO.getPrice());
 			preparedStatement.setInt(3, menuDTO.getNo());
 			int updateCnt = preparedStatement.executeUpdate();
 			if (updateCnt == 0) {
@@ -574,83 +674,8 @@ public class StoreDAO implements StoreInterface {
         }
     }
 
-//
-//	@Override
-//	public void showStoreAll(StoreDTO storeDTO) {
-//		// 1. 드라이버클래스들 JVM에 로드
-//		try {
-//			Class.forName("oracle.jdbc.OracleDriver");
-//			System.out.println("JDBC드라이버 로드성공");
-//		} catch (ClassNotFoundException e) {
-//			e.printStackTrace();
-//			return;
-//		}
-//
-//		// 2.DB와 연결
-//		Connection conn = null;
-//		// ip바꿔주기
-//		String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
-//		String user = "msa1";
-//		String password = "msa1";
-//
-//		try {
-//			conn = DriverManager.getConnection(url, user, password);
-//			System.out.println("DB접속 성공");
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//
-//		// 3.SQL구문 송신
-//		PreparedStatement pstmt = null;
-//
-//		// 4.SQL문 결과 수신하기
-//		ResultSet rs = null;
-//
-//
-//		String selectSQL = "SELECT name, approve\r\n" + "FROM STORE\r\n";
-//
-//		try {
-//			pstmt = conn.prepareStatement(selectSQL);
-//			rs = pstmt.executeQuery();
-//
-//			while (rs.next()) {
-//				String name = rs.getString(1);
-//				int approve = rs.getInt(2);
-//
-//				if (approve == 1) {
-//					System.out.println(name);
-//				} else {
-//					System.out.println(name + "    승인");
-//				}
-//			}
-//			System.out.println("조회완료");
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			if (rs != null) {
-//				try {
-//					rs.close();
-//				} catch (SQLException e) {
-//				}
-//			}
-//
-//			if (pstmt != null) {
-//				try {
-//					pstmt.close();
-//				} catch (SQLException e) {
-//				}
-//			}
-//
-//			if (conn != null) {
-//				try {
-//					conn.close();
-//				} catch (SQLException e) {
-//				}
-//			}
-//		}
-//
-//
-//	}		
-//	}
+
+		
+	
 
 } // endclass

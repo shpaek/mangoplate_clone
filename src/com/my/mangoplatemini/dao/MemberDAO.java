@@ -14,11 +14,17 @@ public class MemberDAO implements MemberInterface {
 
 
 	@Override
+<<<<<<< HEAD
 	public void login(MemberDTO member) throws Exception {
 		System.out.println(member.getId()+ " " + member.getPassword());
 
 
 
+=======
+	public Integer login(MemberDTO member) {
+		
+		
+>>>>>>> beb48d2a45189da2f40dd5880a4645865d02b6dc
 		Connection conn = null;
 		String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
 		String user = "msa1";
@@ -32,7 +38,11 @@ public class MemberDAO implements MemberInterface {
 
 		// 4. SQL구문 송신
 		PreparedStatement pstmt = null;
+<<<<<<< HEAD
 		String selectSQL = "select user_status from member where id = ? and password = ?";
+=======
+		String selectSQL = "select id , password, user_type from member where id = ? and password = ?";
+>>>>>>> beb48d2a45189da2f40dd5880a4645865d02b6dc
 		try {
 			pstmt = conn.prepareStatement(selectSQL);
 			pstmt.setString(1,member.getId());
@@ -53,6 +63,12 @@ public class MemberDAO implements MemberInterface {
 			}else {
 				throw new Exception("비활성화된 회원입니다. 다른아이디로 로그인 해주세요");
 				}
+<<<<<<< HEAD
+=======
+				return s.getInt(3);
+			}
+			
+>>>>>>> beb48d2a45189da2f40dd5880a4645865d02b6dc
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -68,8 +84,15 @@ public class MemberDAO implements MemberInterface {
 				} catch (SQLException e) {
 				}
 			}
+			
 		}
+<<<<<<< HEAD
 
+=======
+		return 0;
+		
+		
+>>>>>>> beb48d2a45189da2f40dd5880a4645865d02b6dc
 	}
 
 

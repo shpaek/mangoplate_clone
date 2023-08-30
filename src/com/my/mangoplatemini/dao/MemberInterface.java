@@ -6,7 +6,11 @@ public interface MemberInterface {
 	
 	// 회원가입 메서드
 	
+<<<<<<< HEAD
 	void login(MemberDTO member) throws Exception;
+=======
+	Integer login(MemberDTO member);
+>>>>>>> beb48d2a45189da2f40dd5880a4645865d02b6dc
 	
 	void createMember(MemberDTO member);
     // 회원 가입
