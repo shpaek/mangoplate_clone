@@ -9,7 +9,7 @@ public class MenuDTO {
 	private String business_no;
 	private String name;
 	private String beforeName;
-	private Integer price;
+	private String price;
 	
 	public Integer getNo() {
 		return no;
@@ -35,10 +35,10 @@ public class MenuDTO {
 	public void setBeforeName(String beforeName) {
 		this.beforeName = beforeName;
 	}
-	public Integer getPrice() {
+	public String getPrice() {
 		return price;
 	}
-	public void setPrice(Integer price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 

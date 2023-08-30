@@ -21,7 +21,8 @@ public class MemberController {
 		MemberDTO member = new MemberDTO();
 		member.setId(loginId);
 		member.setPassword(loginPassword);
-		memberdao.login(member);
+		int user_type = memberdao.login(member);
+		member.setUser_type(user_type);
 		StoreController storeController = new StoreController();
 		storeController.endlogin(member);
 
