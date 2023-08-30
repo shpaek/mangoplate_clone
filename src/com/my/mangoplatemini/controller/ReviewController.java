@@ -7,7 +7,6 @@ import com.my.mangoplatemini.dao.ReviewDAO;
 import com.my.mangoplatemini.dao.ReviewInterface;
 import com.my.mangoplatemini.dto.MemberDTO;
 import com.my.mangoplatemini.dto.ReviewDTO;
-import com.my.mangoplatemini.dto.StoreDTO;
 
 public class ReviewController {
 	
@@ -58,13 +57,14 @@ public class ReviewController {
 	        dto.setContent(content);
 	        dto.setRating(grade);
 	
+	        System.out.println(mdto.getId());
 	        // dto 객체를 보내서 로직 처리
 	        review.createReview(dto);
 
 			break;
 
 		} //while
-		
+        System.out.println(mdto.getId());
 		storeController.endlogin(mdto);
 		
 	} // createReview
