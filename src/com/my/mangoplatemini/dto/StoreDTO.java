@@ -20,17 +20,6 @@ public class StoreDTO {
 	private Integer rating;
 	private Integer review_cnt;
 
-	public StoreDTO() {
-	}
-
-	public StoreDTO(String business_no, String user_id, String name, String address, String price, String category,
-			String tel, String parking, String open_time, String close_time, String info, Integer approve) {
-	}
-
-	public StoreDTO(String business_no, String user_id, String name, String address, String price, String category,
-			String tel, String parking, String open_time, String close_time, String info) {
-	}
-
 	public String getBusiness_no() {
 		return business_no;
 	}

@@ -14,6 +14,9 @@ public class ReviewDAO implements ReviewInterface {
     String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
     String user = "msa1";
     String password = "msa1";
+//    String url = "jdbc:oracle:thin:@localhost:1521:xe";
+//    String user = "mango";
+//    String password = "mango";
 
     public void connectServer() {
         try {
