@@ -208,29 +208,29 @@ public class StoreController {
 
 			System.out.println("수정할 사항을 입력해주세요.");
 			System.out.println("1.오픈시간, 2.마감시간 3.가게정보 4.주차여부 5.가격대");
-			Integer input = Integer.parseInt(scanner.nextLine());
+			String input = scanner.nextLine();
 
-			if (input == 1) {
+			if (input.equals("1")) {
 				System.out.println("수정할 오픈시간을 입력하세요");
 				String open_time = scanner.nextLine();
 				previewDTO.setOpen_time(open_time);
 				break;
-			} else if (input == 2) {
+			} else if (input.equals("2")) {
 				System.out.println("수정할 마감시간을 입력하세요");
 				String close_time = scanner.nextLine();
 				previewDTO.setClose_time(close_time);
 				break;
-			} else if (input == 3) {
+			} else if (input.equals("3")) {
 				System.out.println("수정할 가게정보을 입력하세요");
 				String info = scanner.nextLine();
 				previewDTO.setInfo(info);
 				break;
-			} else if (input == 4) {
+			} else if (input.equals("4")) {
 				System.out.println("수정할 주차여부를 입력하세요");
 				String parking = scanner.nextLine();
 				previewDTO.setParking(parking);
 				break;
-			} else if (input == 5) {
+			} else if (input.equals("5")) {
 				System.out.println("수정할 가격대를 입력하세요");
 				String price = scanner.nextLine();
 				previewDTO.setPrice(price);
