@@ -21,7 +21,12 @@ public class MemberController {
 		MemberDTO member = new MemberDTO();
 		member.setId(loginId);
 		member.setPassword(loginPassword);
-		memberdao.login(member);
+		try {
+			memberdao.login(member);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return;
+		}
 		StoreController storeController = new StoreController();
 		storeController.endlogin(member);
 

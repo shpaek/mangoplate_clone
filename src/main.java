@@ -10,11 +10,13 @@ public class main {
 	public static void main(String[] args) {
 		MemberDTO mdto = new MemberDTO();
 		MemberController memberController = new MemberController();
-
 		Scanner sc = new Scanner(System.in);
 		int input = 0;
 	
 		System.out.println("------- 안녕하세요 망고플레이트입니다. -------");
+		
+		
+		while (true) {
 		System.out.println("1. 로그인");
 		System.out.println("2. 회원가입");
 		
@@ -30,7 +32,7 @@ public class main {
 			memberController.createMember();
 		}
 
-	} // main
-	
+	} 
+	}
 } // end class
 
