@@ -19,12 +19,12 @@ public class StoreDAO implements StoreInterface {
         // 공통
         // 서버정보
         Connection conn = null;
-//        String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
-//        String user = "msa1";
-//        String password = "msa1";
-    String url = "jdbc:oracle:thin:@localhost:1521:xe";
-    String user = "mango";
-    String password = "mango";
+        String url = "jdbc:oracle:thin:@192.168.1.20:1521:xe";
+        String user = "msa1";
+        String password = "msa1";
+//    String url = "jdbc:oracle:thin:@localhost:1521:xe";
+//    String user = "mango";
+//    String password = "mango";
 
         public void connectServer() {
             try {
@@ -299,7 +299,7 @@ public class StoreDAO implements StoreInterface {
                 resultSet = preparedStatement.executeQuery();
                 StoreDTO storeDTO = new StoreDTO();
                 while (resultSet.next()) {
-                    storeDTO.setRating(resultSet.getInt("rating"));
+//                    storeDTO.setRating(resultSet.getInt("rating"));
                     storeDTO.setName(resultSet.getString("name"));
                     storeDTO.setAddress(resultSet.getString("address"));
                     storeDTO.setPrice(resultSet.getString("price"));
@@ -307,6 +307,8 @@ public class StoreDAO implements StoreInterface {
                     storeDTO.setClose_time(resultSet.getString("close_time"));
                     storeDTO.setCategory(resultSet.getString("category"));
                     storeDTO.setTel(resultSet.getString("tel"));
+                    storeDTO.setRating(resultSet.getFloat("rating"));
+                    storeDTO.setReview_cnt(resultSet.getInt("review_cnt"));
                     storeDTO.setParking(resultSet.getString("parking"));
                     storeDTO.setApprove(resultSet.getInt("approve"));
                 }

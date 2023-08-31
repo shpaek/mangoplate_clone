@@ -10,9 +10,6 @@ public interface MemberInterface {
 	
 	void createMember(MemberDTO member);
     // 회원 가입
-	    
-	void updateMember(MemberDTO member);
-    // 회원 정보 수정		    
 	
 	void deleteMember(String id);
 	// 회원 삭제
