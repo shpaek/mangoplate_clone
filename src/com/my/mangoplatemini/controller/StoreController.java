@@ -1,5 +1,6 @@
 package com.my.mangoplatemini.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -25,16 +26,24 @@ public class StoreController {
     //로그인 후 메소드
     public void endlogin(MemberDTO member) {
         HomeController homeController = new HomeController();
+        MemberController memberController = new MemberController();
 
         if (member.getUser_type() == 1) {
             while (true) {
-                System.out.println("1. 리뷰 등록    2. 초기 화면");
+            	System.out.println("1. 리뷰 등록  2. 회원 탈퇴  3. 초기 화면");
                 String input = scanner.nextLine();
                 if (input.equals("1")) {
                     Map map = storeDAO.showStoreAll();
                     reviewController.createReview(member, map);
                     break;
                 } else if (input.equals("2")) {
+                    try {
+						memberController.deleteMember(member);
+						homeController.init();
+					} catch (SQLException e) {
+					}
+                    break;
+                } else if (input.equals("3")) {
                     homeController.init();
                     break;
                 } else {
@@ -44,7 +53,7 @@ public class StoreController {
         } else if (member.getUser_type() == 2) {
 
             while (true) {
-                System.out.println("1. 상점 등록    2. 내 상점 목록    3. 상점 상세정보    4. 초기 화면");
+                System.out.println("1. 상점 등록  2. 내 상점 목록  3. 상점 상세정보  4. 초기 화면");
                 String input = scanner.nextLine();
 
                 if (input.equals("1")) {
@@ -178,6 +187,8 @@ public class StoreController {
         System.out.println("\n마감시간 : " + s.getClose_time());
         System.out.println("\n카테고리 : " + s.getCategory());
         System.out.println("\n상점설명 : " + s.getInfo());
+        System.out.println("\n상점평점 : " + s.getRating());
+        System.out.println("\n리뷰수 : "+ s.getReview_cnt());
         System.out.println("\n주차여부 : " + s.getParking() + "\n");
         if (s.getApprove() == -1) {
             System.out.println("상점 운영 여부 : X\n");

@@ -17,7 +17,7 @@ public class StoreDTO {
 	private String close_time;
 	private String info;
 	private Integer approve;
-	private Integer rating;
+	private float rating;
 	private Integer review_cnt;
 
 	public String getBusiness_no() {
@@ -116,11 +116,11 @@ public class StoreDTO {
 		this.approve = approve;
 	}
 
-	public Integer getRating() {
+	public Float getRating() {
 		return rating;
 	}
 
-	public void setRating(Integer rating) {
+	public void setRating(Float rating) {
 		this.rating = rating;
 	}
 

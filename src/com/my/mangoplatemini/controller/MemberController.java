@@ -1,4 +1,5 @@
 package com.my.mangoplatemini.controller;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import com.my.mangoplatemini.dao.MemberDAO;
@@ -24,12 +25,17 @@ public class MemberController {
 				MemberDTO member = new MemberDTO();
 				member.setId(loginId);
 				member.setPassword(loginPassword);
+
 				int user_type = memberdao.login(member);
-				member.setUser_type(user_type);
-				storeController.endlogin(member);
-				break;
+				if(user_type == -1) {
+					continue;
+				} else {
+					member.setUser_type(user_type);
+					storeController.endlogin(member);
+					break;
+				}
+				}
 			}
-		}
 	} // login
 
 	//회원가입
@@ -79,5 +85,19 @@ public class MemberController {
 		login();
 	
 	} // createMember
+	
+
+	
+	public void deleteMember(MemberDTO memberDTO) throws SQLException {
+	    System.out.println("정말 탈퇴하시겠습니까? 탈퇴하시려면 숫자를 입력해주세요 (0 : 취소) ");
+	    int no = Integer.parseInt(scanner.nextLine());
+	    
+	    if (no != 0) {  
+	        MemberDAO memberDAO = new MemberDAO();
+			memberDAO.deleteMember(memberDTO.getId());
+	    } else {
+	        System.out.println("탈퇴를 취소합니다.");
+	    }
+	}
 
 } // end class

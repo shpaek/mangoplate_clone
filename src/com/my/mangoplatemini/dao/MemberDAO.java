@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
+import com.my.mangoplatemini.controller.HomeController;
 import com.my.mangoplatemini.dto.MemberDTO;
 
 public class MemberDAO implements MemberInterface {
@@ -37,22 +39,28 @@ public class MemberDAO implements MemberInterface {
 		connectServer();
 
 		PreparedStatement pstmt = null;
-		String selectSQL = "select id , password, user_type from member where id = ? and password = ?";
+		String selectSQL = "select id , password, user_type, user_status from member where id = ? and password = ?";
 		try {
 			pstmt = conn.prepareStatement(selectSQL);
 			pstmt.setString(1, member.getId());
 			pstmt.setString(2, member.getPassword());
+			
 			ResultSet s = pstmt.executeQuery();
-			while (s.next()) {
-				if (member.getId().equals(s.getString("id")) && member.getPassword().equals(s.getString("password"))) {
+			s.next();
+			if(s.getRow()>0) {
+				int status;
+				status = s.getInt("user_status");
+				if(status==0) {
+					System.out.println("※탈퇴한 회원입니다※\n");
+				}else {
 					System.out.println("로그인이 완료되었습니다.");
-				} else {
-					System.out.println("잘못입력");
+					return s.getInt(3);
 				}
-				return s.getInt(3);
+			}else {
+				System.out.println("※가입되지 않은 회원입니다※\n");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("유효한 값을 입력해주세요");
 		} finally {
 			if (pstmt != null) {
 				try {
@@ -67,12 +75,13 @@ public class MemberDAO implements MemberInterface {
 				}
 			}
 		}
-		return 0;
+		return -1;
 	}
 
 	@Override
 	public void createMember(MemberDTO member) {
 		connectServer();
+		HomeController homeController = new HomeController();
 
 		PreparedStatement pstmt = null;
 		String insertSQL = "INSERT INTO MEMBER(id, password, email, name, tel,user_type,user_status) VALUES (?,?,?,?,?,?,?)";
@@ -87,8 +96,12 @@ public class MemberDAO implements MemberInterface {
 			pstmt.setInt(7, 1);
 			pstmt.executeUpdate();
 			System.out.println("가입이 완료되었습니다\n");
-		} catch (SQLException e) {
-			e.printStackTrace();
+		}catch(SQLIntegrityConstraintViolationException e) {
+			System.out.println("이미 가입된 회원입니다");
+			homeController.init();
+		}  catch (SQLException e) {
+			System.out.println("유효한 값을 입력해주세요");
+			homeController.init();
 		} finally {
 			if (pstmt != null) {
 				try {
@@ -105,39 +118,6 @@ public class MemberDAO implements MemberInterface {
 		}
 	}
 
-	@Override
-	public void updateMember(MemberDTO member) {
-		connectServer();
-
-		PreparedStatement pstmt = null;
-		String insertSQL = "UPDATE MEMBER "
-				+ "set password = ? , email = ? , name= ? , tel = ? WHERE id = ? ";
-		try {
-			pstmt = conn.prepareStatement(insertSQL);
-			pstmt.setString(1, member.getPassword());
-			pstmt.setString(2, member.getEmail());
-			pstmt.setString(3, member.getName());
-			pstmt.setString(4, member.getTel());
-			pstmt.setString(5, member.getId());
-			int rowcnt = pstmt.executeUpdate();
-			System.out.println(rowcnt + "수정이 완료되었습니다");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-				}
-			}
-		}
-	}
 
 	@Override
 	public void deleteMember(String id) {
@@ -147,12 +127,8 @@ public class MemberDAO implements MemberInterface {
 			String updateQuery = "UPDATE member SET user_status = 0 WHERE ID = ?";
 			try (PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
 				pstmt.setString(1, id);
-				int doracc = pstmt.executeUpdate();
-				if (doracc > 0) {
-					System.out.println("회원 비활성화 완료.");
-				} else {
-					System.out.println("해당 회원을 찾을 수 없거나 이미 비활성화되었습니다.");
-				}
+				pstmt.executeUpdate();
+				System.out.println("탈퇴가 완료되었습니다.");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
