@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
-import com.my.mangoplatemini.controller.HomeController;
+import com.my.mangoplatemini.controller.MemberController;
 import com.my.mangoplatemini.dto.MemberDTO;
 
 public class MemberDAO implements MemberInterface {
@@ -81,7 +81,7 @@ public class MemberDAO implements MemberInterface {
 	@Override
 	public void createMember(MemberDTO member) {
 		connectServer();
-		HomeController homeController = new HomeController();
+		MemberController memberController = new MemberController();
 
 		PreparedStatement pstmt = null;
 		String insertSQL = "INSERT INTO MEMBER(id, password, email, name, tel,user_type,user_status) VALUES (?,?,?,?,?,?,?)";
@@ -98,10 +98,10 @@ public class MemberDAO implements MemberInterface {
 			System.out.println("가입이 완료되었습니다\n");
 		}catch(SQLIntegrityConstraintViolationException e) {
 			System.out.println("이미 가입된 회원입니다");
-			homeController.init();
+			memberController.login();
 		}  catch (SQLException e) {
 			System.out.println("유효한 값을 입력해주세요");
-			homeController.init();
+			memberController.login();
 		} finally {
 			if (pstmt != null) {
 				try {
